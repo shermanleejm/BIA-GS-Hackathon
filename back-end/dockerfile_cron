@@ -17,7 +17,7 @@ RUN python -m nltk.downloader stopwords
 RUN python -m nltk.downloader averaged_perceptron_tagger
 
 ENV AWS_ACCESS_KEY_ID AKIAXIDZOC6N4NE6KGUD
-ENV AWS_SECRET_ACCESS_KEY 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
+ENV AWS_SECRET_ACCESS_KEY 
 
 EXPOSE 5000
 
