@@ -1,0 +1,25 @@
+FROM python:3.7
+
+COPY . /app
+
+WORKDIR /app
+
+RUN pip install -r requirements.txt
+
+RUN apt-get update 
+RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
+
+#download and install chrome
+# RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+
+RUN python -m nltk.downloader stopwords
+RUN python -m nltk.downloader averaged_perceptron_tagger
+
+ENV AWS_ACCESS_KEY_ID AKIAXIDZOC6N4NE6KGUD
+ENV AWS_SECRET_ACCESS_KEY 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
+
+EXPOSE 5000
+
+CMD python app_cron.py
+# CMD gunicorn -w 1 --timeout 3000000 --log-level debug --bind 0.0.0.0:5000 app:app
