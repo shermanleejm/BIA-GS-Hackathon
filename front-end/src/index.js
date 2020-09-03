@@ -4,11 +4,16 @@ import './index.css';
 import App from './components/app/App';
 
 import * as serviceWorker from './serviceWorker';
+import LoginFormContainer from './components/login/containers/LoginFormContainer';
+
+import 'bootstrap/dist/css/bootstrap.css';
 // import SampleComponent from './components/SampleComponent';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <div className='container'>
+    	<LoginFormContainer />
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );
