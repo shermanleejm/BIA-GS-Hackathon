@@ -90,4 +90,4 @@ class SampleComponent extends Component {
     }
 }
 
-export default SampleComponent; 
+export default SampleComponent;

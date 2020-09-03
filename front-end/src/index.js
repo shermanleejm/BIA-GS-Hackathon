@@ -1,19 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './components/app/App';
+
 import * as serviceWorker from './serviceWorker';
-import SampleComponent from './components/SampleComponent';
+import LoginFormContainer from './components/login/containers/LoginFormContainer';
+
+import 'bootstrap/dist/css/bootstrap.css';
+// import SampleComponent from './components/SampleComponent';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <div className='container'>
+    	<LoginFormContainer />
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
 // renders to public/index.html div with id "sample-component"
-ReactDOM.render(<SampleComponent />, document.getElementById("sample-component"))
+// ReactDOM.render(<SampleComponent />, document.getElementById("sample-component"))
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
