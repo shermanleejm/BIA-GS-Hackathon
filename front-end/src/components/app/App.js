@@ -1,11 +1,23 @@
-import React from "react";
-import logo from "../../images/logo.svg";
+import React, { useState } from "react";
 import "./App.css";
+import LoginFormContainer from "../login/containers/LoginFormContainer";
+import Home from "../../pages/home";
+import Cookies from "js-cookie";
 
 function App() {
+  const cookie = Cookies();
+  const [isAuthenticated, setAuthenticated] = useState(Cookies.get('authenticated'));
+  const authenticate = () => {
+    setAuthenticated(true);
+    Cookies.set('authenticated', true);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="App container">
+      {
+        isAuthenticated ?
+        <Home /> : <LoginFormContainer authenticate={authenticate}/>
+      }
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -18,7 +30,7 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
     </div>
   );
 }

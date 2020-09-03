@@ -4,16 +4,22 @@ import './index.css';
 import App from './components/app/App';
 
 import * as serviceWorker from './serviceWorker';
-import LoginFormContainer from './components/login/containers/LoginFormContainer';
 
 import 'bootstrap/dist/css/bootstrap.css';
 // import SampleComponent from './components/SampleComponent';
 
 ReactDOM.render(
   <React.StrictMode>
-    <div className='container'>
-    	<LoginFormContainer />
-    </div>
+    <App/>
+    {/* <Router>
+      <div className='container'>
+        <Switch>
+          <Route exact path='/home' component={Home}/>
+        </Switch>
+        <LoginFormContainer />
+
+      </div>
+    </Router> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
