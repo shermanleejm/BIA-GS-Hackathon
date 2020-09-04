@@ -2,8 +2,11 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from dotenv import load_dotenv
 import os
 import json
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -104,20 +107,6 @@ def get_term(term):
 # Initial
 
 # For initial adding of Stock
-@app.route('/add', methods=['GET'])
-def add():
-    data = {'ticker': 'AAPL', 'name': 'Apple Inc.', 'sector': 'Technology', 'summary': 'Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. It also sells various related services. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising AirPods, Apple TV, \
-Apple Watch, Beats products, HomePod, iPod touch, and other Apple-branded and third-party accessories. It also provides digital content stores and streaming services; AppleCare support services; and iCloud, a cloud service, which stores music, photos, contacts, calendars, mail, documents, and others. In addition, the company offers various service, such as Apple Arcade, a game subscription service; Apple Card, a co-branded credit card; Apple News+, a subscription news and magazine service; and Apple Pay, a cashless payment service, as well as licenses its intellectual property, and provides other related services. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets. It sells and delivers third-party applications for its products through the App Store, Mac App Store, and Watch App Store. The company also sells its products through its retail and online stores, and direct sales force; and third-party cellular network carriers, wholesalers, retailers, and resellers. Apple Inc. has a collaboration with Google to develop COVID-19 tracking system \
-for Android and iOS devices. Apple Inc. was founded in 1977 and is headquartered in Cupertino, California.'}
-
-    stock = Stock(**data)
-    db.session.add(stock)
-    db.session.commit()
-    
-    return {"message": f"Stock {stock.name} has been created successfully."}
-
-
-# For initial adding of Stock
 @app.route('/add', methods=['POST'])
 def add_post():
     data = json.loads(request.get_json())
@@ -138,4 +127,4 @@ def add_term():
     return {"message": f"Term {term.term} has been created successfully."}
         
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
