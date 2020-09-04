@@ -5,12 +5,12 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-
 from constants import DB_URI
 
 app = Flask(__name__)
 
 logging.basicConfig(filename = "console.log",
+            filemode = "w",
             level=logging.INFO)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
@@ -21,6 +21,9 @@ migrate = Migrate(app, db)
 
 import posts
 import user
+
+def to_json(a_dictionary):
+    return json.loads(json.dumps(a_dictionary))
 
 @app.route("/")
 def home():
@@ -43,8 +46,11 @@ def authenticate_login():
     password = request.args.get('password')
 
     app.logger.info(f"Authenticating login for {username}")
-    
-    return user.validate_user(username, password)
+
+    return_dict = {
+        "is_sucessful_login": user.validate_user(username, password)
+    }
+    return to_json(return_dict)
 
 @app.route("/login/checkfirstlogin", methods = ['GET'])
 def check_first_login():
@@ -53,7 +59,11 @@ def check_first_login():
 
     app.logger.info(f"Checking if user: {username} has completed questionnaire.")
 
-    return user.check_first_login(username)
+    return_dict = {
+        "is_first_login": user.check_first_login(username)
+
+    }
+    return to_json(return_dict)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
