@@ -36,22 +36,26 @@ class HomePage extends Component {
         futures: {
           risk: "low",
           description: "lorem ipsum",
-          top5: false,
+					top5: false,
+					link: "https://www.investopedia.com/terms/b/bond.asp"
         },
         stocks: {
           risk: "high",
           description: "lorem ipsum",
-          top5: true,
+					top5: true,
+					link: "https://www.investopedia.com/terms/b/bond.asp"
         },
         bonds: {
           risk: "high",
           description: "lorem ipsum",
-          top5: true,
+					top5: true,
+					link: "https://www.investopedia.com/terms/b/bond.asp"
         },
         "Money Market Fund": {
           risk: "high",
           description: "lorem ipsum",
-          top5: true,
+					top5: true,
+					link: "https://www.investopedia.com/terms/b/bond.asp"
         },
       },
       filterOptions: ["Recommended", "Friends", "Partners"],
@@ -67,13 +71,19 @@ class HomePage extends Component {
   render() {
     return (
       <div>
+        <Typography
+          variant="h6"
+          style={{ textAlign: "left", width: "78vw", margin: "auto", paddingTop: "10px"}}
+        >
+          Recommended financial products to focus on based on your risk profile:
+        </Typography>
         <Grid
           container
           direction="column"
           justify="flex-start"
           alignItems="center"
           spacing={3}
-          style={{ paddingTop: "20px", maxWidth: "80vw", margin: "auto" }}
+          style={{ maxWidth: "80vw", margin: "auto" }}
         >
           <Grid
             item
@@ -114,7 +124,10 @@ class HomePage extends Component {
             })}
           </Grid>
 
-          <Grid item style={{ width: "79vw", paddingBottom: "30px", paddingTop: "20px" }}>
+          <Grid
+            item
+            style={{ width: "79vw", paddingBottom: "30px", paddingTop: "20px" }}
+          >
             <Autocomplete
               multiple
               options={this.state.filterOptions}
@@ -135,13 +148,8 @@ class HomePage extends Component {
             />
           </Grid>
 
-          <Grid item>
-            <Grid
-              container
-              column
-              spacing={3}
-              style={{ textAlign: "left", width: "80vw", minWidth: "80vw" }}
-            >
+          <Grid item style={{ maxWidth: "80vw", magin: "auto" }}>
+            <Grid container column spacing={3} style={{ textAlign: "left" }}>
               {this.state.postData.map((post) => {
                 if (this.state.chosenFilter.includes(post.category)) {
                   return (

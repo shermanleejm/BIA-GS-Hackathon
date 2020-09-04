@@ -15,13 +15,25 @@ function App() {
     Cookies.set("authenticated", true);
   };
 
-  const [pageToShow, setPageToShow] = useState();
-  const headerCallback = () => {};
+  const [pageToShow, setPageToShow] = useState(0);
+  const headerCallback = (newValue) => {
+    setPageToShow(newValue);
+  };
+
+  const mainPage = () => {
+    switch (pageToShow) {
+      case 0: return <HomePage />;
+      case 1: return <div>THIS IS EDUCATE</div>;
+      case 2: return <div>THIS IS FRIENDS</div>;
+    }
+  }
 
   return (
     <div className="App">
       {isAuthenticated ? (
         <div>
+          <AppHeader pageToShow={pageToShow} headerCallback={headerCallback} />
+          {mainPage()}
           <Home />
         </div>
       ) : (
