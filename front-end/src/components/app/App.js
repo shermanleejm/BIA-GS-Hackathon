@@ -4,6 +4,8 @@ import LoginFormContainer from "../login/containers/LoginFormContainer";
 import Home from "../../pages/home";
 import Cookies from "js-cookie";
 import AppHeader from "../home/components/AppHeader";
+import HomePage from "../home/components/HomePage";
+import EducationPage from "../education/components/EducationPage";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(
@@ -14,14 +16,26 @@ function App() {
     Cookies.set("authenticated", true);
   };
 
-  const [pageToShow, setPageToShow] = useState();
-  const headerCallback = () => {};
+  const [pageToShow, setPageToShow] = useState(1);
+  const headerCallback = (newValue) => {
+    setPageToShow(newValue);
+  };
+
+  const mainPage = () => {
+    switch (pageToShow) {
+      case 0: return <HomePage />;
+      case 1: return <EducationPage />;
+      case 2: return <div>THIS IS FRIENDS</div>;
+    }
+  }
 
   return (
     <div className="App">
       {isAuthenticated ? (
         <div>
-          <Home />
+          <AppHeader pageToShow={pageToShow} headerCallback={headerCallback} />
+          {mainPage()}
+          {/* <Home /> */}
         </div>
       ) : (
         <LoginFormContainer authenticate={authenticate} />

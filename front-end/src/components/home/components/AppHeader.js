@@ -16,7 +16,8 @@ import PeopleIcon from "@material-ui/icons/People";
 class AppHeader extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: 0 };
+    var value = this.props.pageToShow;
+    this.state = { value: value };
   }
 
   render() {
@@ -39,9 +40,10 @@ class AppHeader extends Component {
               value={this.state.value}
               onChange={(event, newValue) => {
                 this.setState({
-                  value: newValue,
-                });
-                console.log(this.state.value)
+                  value: newValue
+                })
+                this.props.headerCallback(newValue);
+                console.log(this.state.value);
               }}
               indicatorColor="primary"
               centered
