@@ -1,17 +1,18 @@
 import json
 import os
 import logging
+import settings
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
-from constants import DB_URI
 
 app = Flask(__name__)
 
 logging.basicConfig(filename = "console.log",
             filemode = "w",
             level=logging.INFO)
+
+DB_URI = os.environ.get('DB_URI')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,17 +30,16 @@ def to_json(a_dictionary):
 def home():
     return "this is home, truly"
 
-@app.route("/post")
-def post():
-    all_posts = posts.get_all_posts()
-    return "Call to posts db success"
+# @app.route("/register", methods = ['PUT'])
+# def register_user():
 
-@app.route("/allusers")
-def all_user():
-    all_users = user.get_all_users()
-    return "Got all users"
 
-@app.route("/login/authenticate", methods = ['GET'])
+#     return_dict = {
+#         "is_successful_registration": user.register_user
+#     }
+#     return
+
+@app.route("/login/authenticate", methods = ['POST'])
 def authenticate_login():
 
     username = request.args.get('userid') 
@@ -52,7 +52,7 @@ def authenticate_login():
     }
     return to_json(return_dict)
 
-@app.route("/login/checkfirstlogin", methods = ['GET'])
+@app.route("/login/checkfirstlogin", methods = ['POST'])
 def check_first_login():
 
     username = request.args.get('userid') 
