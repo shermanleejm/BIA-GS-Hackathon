@@ -10,7 +10,7 @@ const RiskProfileContainer = () => {
                     <p className="card-text">These are your potential focus areas:</p>
                     <div className='row text-left mb-4'>
                         <div className='col-md-4 col-sm-12'>
-                            <div className="card">
+                            <div className="card h-150">
                                 <div className="card-body">
                                     <h5 className="card-title">Futures</h5>
                                     <p className="card-text"><small>A legal agreement to buy or sell a particular commodity asset, or security at a predetermined price at a specified time in the future.</small></p>
@@ -19,7 +19,7 @@ const RiskProfileContainer = () => {
                             </div>
                         </div>
                         <div className='col-md-4 col-sm-12'>
-                            <div className="card">
+                            <div className="card h-150">
                                 <div className="card-body">
                                     <h5 className="card-title">ETFs</h5>
                                     <p className="card-text"><small>A type of security that involves a collection of securities—such as stocks—that often tracks an underlying index</small></p>
@@ -28,7 +28,7 @@ const RiskProfileContainer = () => {
                             </div>
                         </div>
                         <div className='col-md-4 col-sm-12'>
-                            <div className="card">
+                            <div className="card h-150">
                                 <div className="card-body">
                                     <h5 className="card-title">REITs</h5>
                                     <p className="card-text"><small>Allows individual investors to earn dividends from real estate investments—without having to buy, manage, or finance any properties themselves.</small></p>
