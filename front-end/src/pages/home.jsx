@@ -1,10 +1,9 @@
 import React from 'react'
-import RiskProfileContainer from '../components/riskProfile/containers/RiskProfileContainer'
+import QuestionContainer from '../components/questionnaire/containers/QuestionContainer'
 const Home = () => {
     return (
         <>
-            {/* <QuestionContainer/> */}
-            <RiskProfileContainer/>
+            <QuestionContainer/>
         </>
     )
 }
