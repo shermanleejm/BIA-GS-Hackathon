@@ -1,9 +1,11 @@
 import React from 'react'
+import RiskProfileContainer from '../components/riskProfile/containers/RiskProfileContainer'
 const Home = () => {
     return (
-        <p>
-            hello
-        </p>
+        <>
+            {/* <QuestionContainer/> */}
+            <RiskProfileContainer/>
+        </>
     )
 }
 

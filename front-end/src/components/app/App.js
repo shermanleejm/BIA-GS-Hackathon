@@ -5,14 +5,13 @@ import Home from "../../pages/home";
 import Cookies from "js-cookie";
 
 function App() {
-  const cookie = Cookies();
   const [isAuthenticated, setAuthenticated] = useState(Cookies.get('authenticated'));
   const authenticate = () => {
     setAuthenticated(true);
     Cookies.set('authenticated', true);
   }
   return (
-    <div className="App container">
+    <div className="App">
       {
         isAuthenticated ?
         <Home /> : <LoginFormContainer authenticate={authenticate}/>
