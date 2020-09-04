@@ -4,6 +4,7 @@ import LoginFormContainer from "../login/containers/LoginFormContainer";
 import Home from "../../pages/home";
 import Cookies from "js-cookie";
 import AppHeader from "../home/components/AppHeader";
+import HomePage from "../home/components/HomePage";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(
