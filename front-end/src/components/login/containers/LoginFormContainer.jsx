@@ -12,9 +12,10 @@ const LoginFormContainer = (props) => {
         const userid = document.getElementById('inputEmail').value;
         const password = document.getElementById('inputPassword').value;
         const data = { userid: userid , password: password};
-        axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/login/authenticate", data).then((res) => {
+        axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/login/authenticate", {params:data}).then((res) => {
             if (res.data.is_successful_login) {
                 Cookies.set('userid', userid);
+                props.authenticate();
             } else {
                 setLoginError(true);
             }
