@@ -30,14 +30,31 @@ def to_json(a_dictionary):
 def home():
     return "this is home, truly"
 
-# @app.route("/register", methods = ['PUT'])
-# def register_user():
+@app.route("/login/register", methods = ['PUT'])
+def register_user():
 
+    username = request.args.get('userid') 
+    password = request.args.get('password')
 
-#     return_dict = {
-#         "is_successful_registration": user.register_user
-#     }
-#     return
+    return_dict = {
+        "is_successful_registration": user.register_user(username, password)
+    }
+    return return_dict
+
+@app.route("/login/profiling", methods = ['PUT'])
+def profile_user():
+    username = request.args.get('userid')
+    age = request.args.get('age')
+    occupation = request.args.get('occupation')
+    spending = request.args.get('spending')
+    risk = request.args.get('risk')
+
+    return_dict = {
+        "is_successful_profiling": user.profile(username, age, occupation,
+                                            spending, risk)
+    }
+
+    return return_dict
 
 @app.route("/login/authenticate", methods = ['POST'])
 def authenticate_login():

@@ -17,17 +17,34 @@ class User(db.Model):
         self.spending = spending
         self.risk = risk
 
-def register_user(user_id, password, age, occupation, spending, risk):
-    new_user = User(user_id, password, age, occupation, spending, risk)
+def profile(user_id, age, occupation, spending, risk):
+    try:
+        app.logger.info(f"Updating information for user: {user_id}")
+        user = User.query.filter_by(user_id=user_id).first()
+
+        user.age = age
+        user.occupation = occupation
+        user.spending = spending
+        user.risk = risk
+        db.session.commit()
+    
+        app.logger.info(f" SUCCESS: Updated information for user {user_id}")
+        return True
+    except:
+        app.logger.info(f" FAIL: Error occurred when updating database")
+        return False
+
+def register_user(user_id, password):
+    new_user = User(user_id, password, None, None, None, None)
     try:
         app.logger.info(f"Inserting new user: {user_id}")
         db.session.add(new_user)
         db.session.commit()
 
-        app.logger.info(f"Succesfully added new uesr.")
+        app.logger.info(f" SUCCESS: added new user {user_id}.")
         return True
     except:
-        app.logger.info(f"Error in adding new user.")
+        app.logger.info(f" FAIL: Error adding new user.")
         return False
 
 
