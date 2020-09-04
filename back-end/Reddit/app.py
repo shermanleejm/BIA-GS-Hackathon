@@ -82,5 +82,16 @@ def check_first_login():
     }
     return to_json(return_dict)
 
+@app.route("/post/create", methods = ['PUT'])
+def create_post():
+    user_id = request.args.get('userid')
+    content = request.args.get('content')
+
+    return_dict = {
+        'is_post_created_successfully': posts.create_post(user_id, content)
+    }
+
+    return return_dict
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
