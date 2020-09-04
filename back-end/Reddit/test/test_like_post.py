@@ -1,6 +1,6 @@
 import requests
 
-url = "http://localhost:5000/post/like"
+url = "http://localhost:5000/post/togglelike"
 
 data = {
     "userid": "Bob",

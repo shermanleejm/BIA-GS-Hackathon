@@ -110,7 +110,7 @@ def create_post():
 
     return return_dict
 
-@app.route("/post/like", methods = ["POST"])
+@app.route("/post/togglelike", methods = ["POST"])
 def like_post():
     user_id = request.args.get('userid')
     post_id = request.args.get('postid')
@@ -161,7 +161,7 @@ def toggle_add():
     }
     return return_dict
 
-@app.route("/watchlist/get", methods = ["POST"])
+@app.route("/watchlist/getall", methods = ["POST"])
 def get_watchlist():
 
     user_id = request.args.get('userid')
