@@ -8,6 +8,7 @@ import EducationPage from "../education/components/EducationPage";
 import QuestionContainer from "../questionnaire/containers/QuestionContainer";
 import { useEffect } from "react";
 import axios from "axios";
+import FriendsPage from "../friends/containers/FriendsPage";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState();
@@ -55,7 +56,7 @@ function App() {
       case 1:
         return <EducationPage />;
       case 2:
-        return <div>THIS IS FRIENDS</div>;
+        return <FriendsPage />;
     }
   };
 
