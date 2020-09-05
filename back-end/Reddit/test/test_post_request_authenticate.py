@@ -1,40 +1,39 @@
 import requests
 import json
 
-url = "http://13.229.107.243:8001/login/authenticate"
-# url = "http://localhost:5000/login/authenticate"
+# url = "http://13.229.107.243:5001/login/authenticate"
+url = "http://localhost:5000/login/authenticate"
 
-# data = {
-#     "user_id": "Bob",
-#     "password": "bob1"
-# }
+data = {
+    "user_id": "Bob",
+    "password": "bob1"
+}
 
-# response = requests.post(url, params = data)
-# print(response.text) # Should return True
+response = requests.post(url, data = json.dumps(data))
 
-# data = {
-#     "user_id": "Bob",
-#     "password": "bob2"
-# }
+print("Expected: True, Actual:", json.loads(response.text)['success']) # Should return True
 
-# response = requests.post(url, params = data)
-# print(response.text) # should return False
+data = {
+    "user_id": "Bob",
+    "password": "bob2"
+}
+
+response = requests.post(url, data = json.dumps(data))
+print("Expected: False, Actual:", json.loads(response.text)['success']) # Should return True
 
 data = {
     "user_id": "Apple",
     "password": "apple1"
 }
 
-data = json.dumps(data)
+response = requests.post(url, data = json.dumps(data))
 
-print(url)
-response = requests.post(url, json = data)
-print(response.text) # should return True
+print("Expected: True, Actual:", json.loads(response.text)['success']) # Should return True
 
-# data = {
-#     "user_id": "Nicholas",
-#     "password": "nicholas1"
-# }
+data = {
+    "user_id": "Nicholas",
+    "password": "nicholas1"
+}
 
-# response = requests.post(url, params = data)
-# print(response.text) # should return False
+response = requests.post(url, data = json.dumps(data))
+print("Expected: False, Actual:", json.loads(response.text)['success']) # Should return True
