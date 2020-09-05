@@ -59,8 +59,11 @@ def authenticate_login():
     password = data['password']
 
     app.logger.info(f"Authenticating login for {username}")
-    
-    return jsonify(user.authenticate_user(username, password))
+
+    return_dict = {
+        "is_sucessful_login": user.authenticate_user(username, password)
+    }
+    return jsonify(return_dict)
 
 @app.route("/login/checkfirstlogin/<user_id>", methods = ['GET'])
 def check_first_login(user_id):

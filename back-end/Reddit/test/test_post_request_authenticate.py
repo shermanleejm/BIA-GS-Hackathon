@@ -1,6 +1,8 @@
 import requests
+import json
 
 url = "http://13.229.107.243:8001/login/authenticate"
+# url = "http://localhost:5000/login/authenticate"
 
 # data = {
 #     "user_id": "Bob",
@@ -23,10 +25,10 @@ data = {
     "password": "apple1"
 }
 
-json.loads(request.get_json())
+data = json.dumps(data)
 
 print(url)
-response = requests.post(url, params = data)
+response = requests.post(url, json = data)
 print(response.text) # should return True
 
 # data = {
