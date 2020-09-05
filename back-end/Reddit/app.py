@@ -5,6 +5,9 @@ import settings
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from python-dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -195,3 +198,4 @@ def get_non_friends(user_id):
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
+    # app.run(port=5001, host="0.0.0.0")
