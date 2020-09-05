@@ -27,7 +27,9 @@ def toggle_like(post_id, user_id):
         app.logger.info(f" SUCCESS: {user_id} no longer likes {post_id}")
         
     db.session.commit()
-    return True
+    return {
+        "is_success": True
+    }
 
 def get_like_info(post_id):
     """
@@ -36,9 +38,4 @@ def get_like_info(post_id):
     app.logger.info(f"Querying database to obtain likes for postId: {post_id}")
     likes = Likes.query.filter_by(post_id = int(post_id)).all()
 
-    likes_information = {
-        "likers": [user.user_id for user in likes],
-        "number_likes": len(likes)
-    }
-
-    return likes_information
+    return [user.user_id for user in likes]

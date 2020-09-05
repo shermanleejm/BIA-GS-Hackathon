@@ -11,21 +11,40 @@ class Friend(db.Model):
 
 def connect(sender_id, receiver_id):
     app.logger.info(f" Attempting to form friendship between {sender_id} and {receiver_id}")
-    try:
-        new_friend = Friend(sender_id, receiver_id)
-        db.session.add(new_friend)
-        db.session.commit()
 
-        friend_reverse = Friend(receiver_id, sender_id)
-        db.session.add(friend_reverse)
-        db.session.commit()
+    is_connection_success = False
 
-        app.logger.info(" SUCCESS: Friendship formed.")
-        return True
-    except:
-        app.logger.info(" FAIL: Users are already friends.")
+    # try:
+    new_friend = Friend(sender_id, receiver_id)
+    db.session.add(new_friend)
+    db.session.commit()
 
-        return False
+    friend_reverse = Friend(receiver_id, sender_id)
+    db.session.add(friend_reverse)
+    db.session.commit()
+
+    app.logger.info(" SUCCESS: Friendship formed.")
+    is_connection_success = True
+    # except:
+    #     app.logger.info(" FAIL: Error in forming friendship.")
+
+    return {
+        "is_success": is_connection_success
+    }
+
+def get_non_friends(user_id):
+    """
+    takes in user_id
+
+    returns a list of non_friends
+    """
+    app.logger.info(f"Querying database to obtain friends user_id: {user_id}")
+
+    connections = Friend.query.filter_by(sender_id=user_id).all()
+
+    friends = [connection.receiver_id for connection in connections]
+
+    return friends
 
     
 def get_friends(user_id):

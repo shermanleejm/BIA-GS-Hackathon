@@ -3,7 +3,7 @@ from app import app, db
 class User(db.Model):
     user_id = db.Column(db.String(), primary_key = True)
     password = db.Column(db.String())
-    age = db.Column(db.Integer)
+    age = db.Column(db.String())
     occupation = db.Column(db.String())
     spending = db.Column(db.String())
     risk = db.Column(db.String())
@@ -27,9 +27,11 @@ class User(db.Model):
             "risk": self.risk,
         }
 
-def profile(user_id, age, occupation, spending, risk):
+def profile_user(user_id, age, occupation, spending, risk):
+
+    app.logger.info(f"Updating information for user: {user_id}")
+    is_profiling_success = False
     try:
-        app.logger.info(f"Updating information for user: {user_id}")
         user = User.query.filter_by(user_id=user_id).first()
 
         user.age = age
@@ -39,39 +41,60 @@ def profile(user_id, age, occupation, spending, risk):
         db.session.commit()
     
         app.logger.info(f" SUCCESS: Updated information for user {user_id}")
-        return True
+        is_profiling_success = True
     except:
-        app.logger.info(f" FAIL: Error occurred when updating database")
-        return False
+        app.logger.error(f" FAIL: Error occurred when updating database")
+    
+    return {
+        "success": is_profiling_success
+    }
+        
 
 def register_user(user_id, password):
     new_user = User(user_id, password, None, None, None, None)
+
+    is_registration_success = False
     try:
         app.logger.info(f"Inserting new user: {user_id}")
         db.session.add(new_user)
         db.session.commit()
 
         app.logger.info(f" SUCCESS: added new user {user_id}.")
-        return True
+        is_registration_success = True
     except:
-        app.logger.info(f" FAIL: Error adding new user.")
-        return False
+        app.logger.error(f" FAIL: Error adding new user.")
+
+    return {
+        "success": is_registration_success
+    }
 
 
-def validate_user(user_id_to_check, password):
+def authenticate_user(user_id_to_check, password):
     """
     Returns a boolean to check if user's password is correct.
 
     """
     user = User.query.filter_by(user_id=user_id_to_check).first()
+
+    is_auth_success = False
+
+    if (user is not None):
+        # User exists    
+        app.logger.info(" User exists in database. ")
+        
+        if user.password == password:
+            app.logger.info(" SUCCESS: Password authenticated.")
+            is_auth_success = True
+            
+        else:
+            app.logger.info(" FAIL: Incorrect password.")
+
+    else:
+        app.logger.info(" User does not exist in database.")
     
-    try:
-        is_user_found = user.password == password
-        app.logger.info(" SUCCESS: Password authenticated.")
-        return is_user_found
-    except:
-        app.logger.info(" FAIL: Incorrect password.")
-        return False
+    return {
+        "success": is_auth_success
+    }
 
 def check_first_login(user_id_to_check):
     """
@@ -80,13 +103,24 @@ def check_first_login(user_id_to_check):
     """
     user = User.query.filter_by(user_id=user_id_to_check).first()
     
-    try:
-        if (user.risk):
+    is_first_login = True
+
+    if (user is not None):
+        app.logger.info(" User exists in database")
+        
+        if (user.risk is not None):
             app.logger.info(" SUCCESS: User has completed questionnaire.")
-            return True
-    except:
-        app.logger.info(" FAIL: User has yet to complete questionnaire.")
-        return False
+            is_first_login = False
+
+        else:
+            app.logger.info(" FAIL: User has yet to complete questionnaire.")
+    
+    else:
+        app.logger.info(" User does not exist in database.")
+
+    return {
+        "is_first_login": is_first_login
+    }
 
 
 def get_users():
@@ -94,10 +128,8 @@ def get_users():
 
     return [user.json() for user in users]
 
-def get_list_of_user_details(user_list):
-    users = []
-    for user_id in user_list:
-        user = User.query.filter_by(user_id=user_id).first()
-        users.append(user.json())
+def get_user_details_from_list(user_list):
 
-    return users
+    required_users = User.query.filter(User.user_id.in_(user_list)).all()
+
+    return [user.json() for user in required_users]
