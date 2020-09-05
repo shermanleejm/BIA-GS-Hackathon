@@ -9,10 +9,12 @@ import {
   TextField,
   Paper,
   CardMedia,
+  Modal,
 } from "@material-ui/core";
 import { Skeleton, Autocomplete } from "@material-ui/lab";
-import testData from "./TempData";
 import postImg from "../../../images/post_img.JPG";
+import fininstruments from "./FinancialInstruments";
+import edupost from "../../education/components/EducationPosts";
 
 // {
 // 	futures: {
@@ -30,37 +32,33 @@ import postImg from "../../../images/post_img.JPG";
 class HomePage extends Component {
   constructor(props) {
     super(props);
+    var filterOptions = ["Recommended", "Friends", "Partners"];
+    console.log(filterOptions[Math.floor(Math.random() * 3)]);
+
+    var finData = fininstruments.fininstruments;
+    var top4 = finData.slice(0, 4);
+
+    var postData = [];
+    var tempArr = {};
+    edupost.postData.map((row) => {
+      tempArr = {
+        title: row.title,
+        category: filterOptions[Math.floor(Math.random() * 3)],
+        shortDescription: row.shortDescription,
+        img: row.img,
+        url: row.link,
+      };
+      postData.push(tempArr);
+    });
+
     this.state = {
       isLoaded: true,
-      top4: {
-        futures: {
-          risk: "low",
-          description: "lorem ipsum",
-					top5: false,
-					link: "https://www.investopedia.com/terms/b/bond.asp"
-        },
-        stocks: {
-          risk: "high",
-          description: "lorem ipsum",
-					top5: true,
-					link: "https://www.investopedia.com/terms/b/bond.asp"
-        },
-        bonds: {
-          risk: "high",
-          description: "lorem ipsum",
-					top5: true,
-					link: "https://www.investopedia.com/terms/b/bond.asp"
-        },
-        "Money Market Fund": {
-          risk: "high",
-          description: "lorem ipsum",
-					top5: true,
-					link: "https://www.investopedia.com/terms/b/bond.asp"
-        },
-      },
-      filterOptions: ["Recommended", "Friends", "Partners"],
-      chosenFilter: ["Recommended"],
-      postData: testData.testData,
+      top4: top4,
+      filterOptions: filterOptions,
+      chosenFilter: [filterOptions[0]],
+      postData: postData,
+      showModal: false,
+      modalToShow: 0,
     };
   }
 
@@ -71,9 +69,82 @@ class HomePage extends Component {
   render() {
     return (
       <div>
+        {this.state.showModal && (
+          <Modal
+            open={this.state.showModal}
+            onClose={() => this.setState({ showModal: false })}
+          >
+            <div
+              style={{
+                position: "fixed",
+                outline: 0,
+                top: "25%",
+                left: "50%",
+                transform: "translate(-50%, -25%)",
+                backgroundColor: "#ffffff",
+                margin: "auto",
+              }}
+            >
+              <Paper style={{ padding: "20px", width: "80vw" }}>
+                <Grid
+                  container
+                  direction="column"
+                  justify="space-between"
+                  alignItems="flex-start"
+                >
+                  <Grid item>
+                    <Typography variant="h3">
+                      {this.state.top4[this.state.modalToShow]["title"]}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item>
+                    <Typography variant="h6">
+                      {this.state.top4[this.state.modalToShow]["instrument"]}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item>
+                    <Typography variant="h6">
+                      {this.state.top4[this.state.modalToShow]["assetClass"]}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item>
+                    {this.state.top4[this.state.modalToShow]["shortDescription"]
+                      .length > 400 ? (
+                      <span>
+                        <Typography variant="body2">
+                          {this.state.top4[this.state.modalToShow][
+                            "shortDescription"
+                          ].slice(0, 393)}
+                          <strong> more...</strong>
+                        </Typography>
+                      </span>
+                    ) : (
+                      <Typography variant="body2">
+                        {
+                          this.state.top4[this.state.modalToShow][
+                            "shortDescription"
+                          ]
+                        }
+                      </Typography>
+                    )}
+                  </Grid>
+                </Grid>
+              </Paper>
+            </div>
+          </Modal>
+        )}
+
         <Typography
           variant="h6"
-          style={{ textAlign: "left", width: "78vw", margin: "auto", paddingTop: "10px"}}
+          style={{
+            textAlign: "left",
+            width: "78vw",
+            margin: "auto",
+            paddingTop: "10px",
+          }}
         >
           Recommended financial products to focus on based on your risk profile:
         </Typography>
@@ -95,29 +166,67 @@ class HomePage extends Component {
           >
             {Object.keys(this.state.top4).map((key) => {
               return (
-                <Grid item md={3} xs={12}>
-                  <Card style={{ textAlign: "left", minWidth: "19vw" }}>
-                    <CardContent>
+                <Grid item md={3} xs={12} lg={3}>
+                  <Card>
+                    <Grid
+                      container
+                      justify="space-between"
+                      style={{
+                        padding: "10px",
+                        textAlign: "left",
+                        minWidth: "19vw",
+                        height: "17vh",
+                      }}
+                    >
                       {this.state.isLoaded ? (
                         <div>
-                          <Typography variant="h5">{key}</Typography>
-                          <Typography variant="body2">
-                            {this.state.top4[key]["description"]}
-                          </Typography>
+                          <Grid item>
+                            <Typography variant="h6">
+                              {this.state.top4[key]["title"]}
+                            </Typography>
+                          </Grid>
+
+                          <Grid item>
+                            {this.state.top4[key]["shortDescription"].length >
+                            100 ? (
+                              <span>
+                                <Typography variant="body2">
+                                  {this.state.top4[key][
+                                    "shortDescription"
+                                  ].slice(0, 93)}
+                                  <strong> more...</strong>
+                                </Typography>
+                              </span>
+                            ) : (
+                              <Typography variant="body2">
+                                {this.state.top4[key]["shortDescription"]}
+                              </Typography>
+                            )}
+                          </Grid>
                         </div>
                       ) : (
                         <div>
                           <Skeleton variant="text" />
                         </div>
                       )}
-                    </CardContent>
-                    <CardActions>
-                      {this.state.isLoaded ? (
-                        <Button>learn more</Button>
-                      ) : (
-                        <Skeleton variant="rect" width="100" height="50" />
-                      )}
-                    </CardActions>
+
+                      <Grid item>
+                        {this.state.isLoaded ? (
+                          <Button
+                            onClick={() => {
+                              this.setState({
+                                showModal: true,
+                                modalToShow: key,
+                              });
+                            }}
+                          >
+                            learn more
+                          </Button>
+                        ) : (
+                          <Skeleton variant="rect" width="100" height="50" />
+                        )}
+                      </Grid>
+                    </Grid>
                   </Card>
                 </Grid>
               );
@@ -148,13 +257,18 @@ class HomePage extends Component {
             />
           </Grid>
 
-          <Grid item style={{ maxWidth: "80vw", magin: "auto" }}>
-            <Grid container column spacing={3} style={{ textAlign: "left" }}>
+          <Grid item>
+            <Grid container column spacing={3}>
               {this.state.postData.map((post) => {
                 if (this.state.chosenFilter.includes(post.category)) {
                   return (
                     <Grid item>
-                      <Card style={{ minWidth: "80vw" }}>
+                      <Card
+                        style={{ width: "80vw" }}
+                        onClick={() => {
+                          window.open(post.url, "_blank");
+                        }}
+                      >
                         <Grid
                           container
                           row
@@ -192,7 +306,7 @@ class HomePage extends Component {
                           <Grid item xs={4} md={3} lg={2}>
                             {this.state.isLoaded ? (
                               <img
-                                src={postImg}
+                                src={post.img}
                                 style={{ height: "128px", width: "128px" }}
                               />
                             ) : (

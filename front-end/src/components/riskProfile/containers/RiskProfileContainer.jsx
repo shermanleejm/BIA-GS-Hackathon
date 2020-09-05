@@ -2,14 +2,16 @@ import React from 'react';
 import { Paper } from "@material-ui/core";
 import { useState } from 'react';
 import HomePage from '../../home/components/HomePage';
+import App from "../../app/App";
 
 const RiskProfileContainer = () => {
     const [completed, setCompleted] = useState(false);
     const handleClick = () => {
         setCompleted(true);
+        localStorage.setItem("newUser", "false");
     }
     return (
-        completed ? <HomePage /> :
+        completed ? <App /> :
         <Paper className='container' style={{'background-color': 'lightgrey'}}>
             <div className="card-body">
                 <h3 className="card-title">You have a <span className='badge badge-info'>LOW RISK</span> profile!</h3>

@@ -14,52 +14,71 @@ function App() {
   const [isFirstTimeUser, setFirstTimeUser] = useState(true);
 
   useEffect(() => {
-    setAuthenticated(Cookies.get('authenticated'));
-  }, [])
+    setAuthenticated(Cookies.get("authenticated"));
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
       const data = {
-        userid: Cookies.get('userid')
-      }
-      axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/login/checkfirstlogin", {params: data}).then((res) => {
-        if (res.data.is_first_login) {
-          setFirstTimeUser(true);
-        } else {
-          setFirstTimeUser(false);
-        }
-      })
+        userid: Cookies.get("userid"),
+      };
+      axios
+        .get(
+          "http://" +
+            process.env.REACT_APP_PUBLIC_IP +
+            ":5000/login/checkfirstlogin",
+          { params: data }
+        )
+        .then((res) => {
+          if (res.data.is_first_login) {
+            setFirstTimeUser(true);
+          } else {
+            setFirstTimeUser(false);
+          }
+        });
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
   const authenticate = () => {
     setAuthenticated(true);
     Cookies.set("authenticated", true);
   };
 
-  const [pageToShow, setPageToShow] = useState(1);
+  const [pageToShow, setPageToShow] = useState(0);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
 
   const mainPage = () => {
     switch (pageToShow) {
-      case 1: return <HomePage />;
-      case 2: return <EducationPage />;
-      case 3: return <div>THIS IS FRIENDS</div>;
+      case 0:
+        return <HomePage />;
+      case 1:
+        return <EducationPage />;
+      case 2:
+        return <div>THIS IS FRIENDS</div>;
     }
-  }
+  };
 
   return (
-    <div className="App container mt-5">
-      {isAuthenticated ?
-      isFirstTimeUser ? <QuestionContainer /> : (
-        <div>
-          <AppHeader pageToShow={pageToShow} headerCallback={headerCallback} />
-          {mainPage()}
-          {/* <Home /> */}
-        </div>
+    <div>
+      {isAuthenticated ? (
+        localStorage.getItem("newUser") !== "false" ? (
+          <div className="App container mt-5">
+            <QuestionContainer />
+          </div>
+        ) : (
+          <div>
+            <AppHeader
+              pageToShow={pageToShow}
+              headerCallback={headerCallback}
+            />
+            {mainPage()}
+          </div>
+        )
       ) : (
-        <LoginFormContainer authenticate={authenticate} />
+        <div className="App container mt-5">
+          <LoginFormContainer authenticate={authenticate} />
+        </div>
       )}
 
       {/* <header className="App-header">
