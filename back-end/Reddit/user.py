@@ -17,6 +17,16 @@ class User(db.Model):
         self.spending = spending
         self.risk = risk
 
+    def json(self):
+        return {
+            "user_id": self.user_id,
+            "password": self.password,
+            "age": self.age,
+            "occupation": self.occupation,
+            "spending": self.spending,
+            "risk": self.risk,
+        }
+
 def profile(user_id, age, occupation, spending, risk):
     try:
         app.logger.info(f"Updating information for user: {user_id}")
@@ -79,3 +89,15 @@ def check_first_login(user_id_to_check):
         return False
 
 
+def get_users():
+    users = User.query.all()
+
+    return [user.json() for user in users]
+
+def get_list_of_user_details(user_list):
+    users = []
+    for user_id in user_list:
+        user = User.query.filter_by(user_id=user_id).first()
+        users.append(user.json())
+
+    return users

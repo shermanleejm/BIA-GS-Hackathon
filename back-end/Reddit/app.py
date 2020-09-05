@@ -174,5 +174,17 @@ def get_watchlist():
     }
     return return_dict
 
+# User Section
+@app.route("/user/<user_id>/getfriends", methods = ["GET"])
+def get_friends(user_id):
+    freind_user_ids = friend.get_friends(user_id)
+    friends = user.get_list_of_user_details(freind_user_ids)
+    return jsonify(friends), 200
+
+@app.route("/users", methods = ['GET'])
+def get_all_users():
+    users = user.get_users()
+    return jsonify(users)
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
