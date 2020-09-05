@@ -57,12 +57,7 @@ def profile_user():
 @app.route("/login/authenticate", methods = ['POST'])
 def authenticate_login():
 
-<<<<<<< Updated upstream
-    data = json.loads(request.data)
-
-=======
     data = json.loads(request.data)    
->>>>>>> Stashed changes
     username = data['user_id'] 
     password = data['password']
 
@@ -189,7 +184,8 @@ def get_non_friends(user_id):
 
     all_users = user.get_users()
     friend_ids = friend.get_friends(user_id)
-    friends = user.get_user_details_from_list(friend_ids)
+    friends = user.get_user_details_from_list(friend_ids) + \
+        user.get_user_details_from_list([user_id])
     
     non_friends = [user for user in all_users if user not in friends]
 
