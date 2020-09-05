@@ -37,6 +37,10 @@ class EducationPage extends Component {
 
   componentDidMount() {
     // fetch("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/");
+    if (localStorage.getItem("skipReload") === null) {
+      window.location.reload();
+    }
+    localStorage.setItem("skipReload", "true");
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
   }
@@ -105,6 +109,7 @@ class EducationPage extends Component {
           margin: "auto",
           paddingTop: "20px",
           backgroundColor: "#ffffff",
+          height: "100%",
         }}
       >
         <div

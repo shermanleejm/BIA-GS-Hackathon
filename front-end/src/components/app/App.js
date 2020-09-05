@@ -9,6 +9,7 @@ import QuestionContainer from "../questionnaire/containers/QuestionContainer";
 import { useEffect } from "react";
 import axios from "axios";
 import FriendsPage from "../friends/containers/FriendsPage";
+import MCQGame from "../game/components/MCQGame";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState();
@@ -39,12 +40,14 @@ function App() {
         });
     }
   }, [isAuthenticated]);
+
   const authenticate = () => {
     setAuthenticated(true);
     Cookies.set("authenticated", true);
+    window.location.reload();
   };
 
-  const [pageToShow, setPageToShow] = useState(1);
+  const [pageToShow, setPageToShow] = useState(3);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
@@ -57,6 +60,8 @@ function App() {
         return <EducationPage />;
       case 2:
         return <FriendsPage />;
+      case 3:
+        return <MCQGame />;
     }
   };
 

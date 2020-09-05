@@ -73,6 +73,10 @@ class HomePage extends Component {
     //       });
     //       localStorage.setItem("termsDownloaded", "true");
     //     });
+    if (localStorage.getItem("skipReload") === null) {
+      window.location.reload();
+    }
+    localStorage.setItem("skipReload", "true");
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
   }
