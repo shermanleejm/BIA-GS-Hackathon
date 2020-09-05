@@ -54,8 +54,9 @@ def profile_user():
 @app.route("/login/authenticate", methods = ['POST'])
 def authenticate_login():
 
-    username = request.args.get('user_id') 
-    password = request.args.get('password')
+    data = json.loads(request.get_json()) 
+    username = data['user_id'] 
+    password = data['password']
 
     app.logger.info(f"Authenticating login for {username}")
     
