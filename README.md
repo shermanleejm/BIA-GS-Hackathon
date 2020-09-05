@@ -36,6 +36,9 @@ docker build -t gs-hackathon .
 docker tag gs-hackathon:latest 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon:latest
 docker push 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon:latest
 
+### push to s3
+aws --profile GS s3 cp build s3://bia-gs-static --recursive --acl public-read
+
 <br><br>
 
 ## FOR FRONT-END
