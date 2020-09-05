@@ -11,18 +11,19 @@ const LoginFormContainer = (props) => {
     const successLogin = () => {
         const userid = document.getElementById('inputEmail').value;
         const password = document.getElementById('inputPassword').value;
-        const data = { userid: userid , password: password};
-        axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/login/authenticate", {params:data}).then((res) => {
-            if (res.data.is_successful_login) {
+        const data = { user_id: userid , password: password};
+
+        axios.post("http://" + process.env.REACT_APP_PUBLIC_IP + ":5001/login/authenticate", data).then((res) => {
+            if (res.data.success) {
                 Cookies.set('userid', userid);
                 props.authenticate();
             } else {
                 setLoginError(true);
             }
         }).catch(err => {
-            setLoginError(true);
-            Cookies.set('userid', userid);
-            props.authenticate();
+            // setLoginError(true);
+            // Cookies.set('userid', userid);
+            // props.authenticate();
         })
     }
 

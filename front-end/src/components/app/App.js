@@ -13,9 +13,16 @@ import FriendsPage from "../friends/containers/FriendsPage";
 function App() {
   const [isAuthenticated, setAuthenticated] = useState();
   const [isFirstTimeUser, setFirstTimeUser] = useState(true);
+  const [suggestedFriends, setSuggestedFriends] = useState();
 
   useEffect(() => {
     setAuthenticated(Cookies.get("authenticated"));
+    const userid = Cookies.get('userid');
+    axios.get(
+        "http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getstrangers/${userid}`
+    ).then(res => {
+        setSuggestedFriends(res.data.slice(0,3));
+    })
   }, []);
 
   useEffect(() => {
@@ -56,7 +63,7 @@ function App() {
       case 1:
         return <EducationPage />;
       case 2:
-        return <FriendsPage />;
+        return <FriendsPage suggestedFriends={suggestedFriends}/>;
     }
   };
 

@@ -7,20 +7,25 @@ import Cookies from 'js-cookie';
 const AddFriendInfoComponent = (props) => {
     const index = props.index;
     const friend = props.friend;
-    const name = friend.name;
+    const name = friend.user_id;
     const userid = friend.user_id;
     const [hidden, setHidden] = useState(false);
+
     const handleClick = () => {
         const data = {
             sender_id: Cookies.get('userid'),
             receiver_id: userid
         }
-        axios.post("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/friend/connect", data).then(res =>{
+        axios.post("http://" + process.env.REACT_APP_PUBLIC_IP + ":8000/friend/connect", data).then(res =>{
             setHidden(true);
         }).catch(err=>{setHidden(true)})
     }
+
+    const handleUserSelect = () => {
+        props.handleUserSelect(userid);
+    }
     return (
-        <Row className={'ml-2'} hidden={hidden} style={{maxWidth:'380px'}}>
+        <Row className={'ml-2'} hidden={hidden} style={{maxWidth:'380px'}} onClick={handleUserSelect}>
             <div className='mr-2 mb-n5'>
                 <img src={`/images/avatar${index+1}.jpg`} alt="..." className="img-thumbnail h-50 rounded-circle mr-n5"/>
                 <div className='float-right ml-n4 mr-2'>
@@ -30,8 +35,8 @@ const AddFriendInfoComponent = (props) => {
                 </div>
             </div>
             <div>
-                <button className='btn btn-sm' style={{'background-color': 'skyblue'}} onClick={handleClick}>
-                    <PersonAddIcon /> Add User
+                <button className='btn btn-sm' onClick={handleClick}>
+                    <PersonAddIcon />
                 </button>
             </div>
         </Row>
