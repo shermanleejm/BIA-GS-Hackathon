@@ -82,11 +82,11 @@ const QuestionContainer = () => {
 
                     {
                         currentQuestion === 0 ?
-                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleNext} value='Next'/> :
+                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2 mb-4' onClick={handleNext} value='Next'/> :
                         currentQuestion !== 3 ?
                         <>
-                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleBack} value='Back'/>
-                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleNext} value='Next'/>
+                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2 mb-4' onClick={handleBack} value='Back'/>
+                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2 mb-4' onClick={handleNext} value='Next'/>
                         </>
                         :
                         <>
