@@ -12,6 +12,7 @@ import {
 import HomeIcon from "@material-ui/icons/Home";
 import SchoolIcon from "@material-ui/icons/School";
 import PeopleIcon from "@material-ui/icons/People";
+import { TabPanel } from "@material-ui/lab";
 
 class AppHeader extends Component {
   constructor(props) {
@@ -40,17 +41,17 @@ class AppHeader extends Component {
               value={this.state.value}
               onChange={(event, newValue) => {
                 this.setState({
-                  value: newValue
-                })
+                  value: newValue,
+                });
                 this.props.headerCallback(newValue);
                 console.log(this.state.value);
               }}
               indicatorColor="primary"
               centered
             >
-              <Tab icon={<HomeIcon />} />
-              <Tab icon={<SchoolIcon />} />
-              <Tab icon={<PeopleIcon />} />
+              <Tab icon={<HomeIcon />} label="Home"/>
+              <Tab icon={<SchoolIcon />} label="Learn"/>
+              <Tab icon={<PeopleIcon />} label="Friends"/>
             </Tabs>
           </Paper>
         </div>

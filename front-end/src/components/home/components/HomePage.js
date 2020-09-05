@@ -61,11 +61,23 @@ class HomePage extends Component {
       showModal: false,
       modalToShow: 0,
     };
+
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
-  // componentDidMount() {
-  //   fetch("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/");
-  // }
+  componentDidMount() {
+    // fetch("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/");
+    this.updateWindowDimensions();
+    window.addEventListener("resize", this.updateWindowDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+  }
 
   render() {
     return (
@@ -138,17 +150,6 @@ class HomePage extends Component {
           </Modal>
         )}
 
-        <Typography
-          variant="h6"
-          style={{
-            textAlign: "left",
-            width: "78vw",
-            margin: "auto",
-            paddingTop: "10px",
-          }}
-        >
-          Recommended financial products to focus on based on your risk profile:
-        </Typography>
         <Grid
           container
           direction="column"
@@ -157,82 +158,102 @@ class HomePage extends Component {
           spacing={3}
           style={{ maxWidth: "80vw", margin: "auto" }}
         >
-          <Grid
-            item
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-            spacing={2}
-          >
-            {Object.keys(this.state.top4).map((key) => {
-              return (
-                <Grid item md={3} xs={12} lg={3}>
-                  <Card>
-                    <Grid
-                      container
-                      justify="space-between"
-                      style={{
-                        padding: "10px",
-                        textAlign: "left",
-                        minWidth: "19vw",
-                        height: "17vh",
-                      }}
-                    >
-                      {this.state.isLoaded ? (
-                        <div>
-                          <Grid item>
-                            <Typography variant="h6">
-                              {this.state.top4[key]["title"]}
-                            </Typography>
-                          </Grid>
+          {window.innerHeight > 1000 && (
+            <div>
+              <Typography
+                variant="h6"
+                style={{
+                  textAlign: "left",
+                  width: "78vw",
+                  margin: "auto",
+                  paddingTop: "10px",
+                }}
+              >
+                Recommended financial products to focus on based on your risk
+                profile:
+              </Typography>
+              <Grid
+                item
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+                spacing={2}
+              >
+                {Object.keys(this.state.top4).map((key) => {
+                  return (
+                    <Grid item md={3} xs={12} lg={3}>
+                      <Card style={{}}>
+                        <Grid
+                          container
+                          justify="space-between"
+                          style={{
+                            padding: "10px",
+                            textAlign: "left",
+                            minWidth: "19vw",
+                            height: "19vh",
+                          }}
+                        >
+                          {this.state.isLoaded ? (
+                            <div>
+                              <Grid item>
+                                <Typography variant="h6">
+                                  {this.state.top4[key]["title"]}
+                                </Typography>
+                              </Grid>
+
+                              <Grid item>
+                                {this.state.top4[key]["shortDescription"]
+                                  .length > 100 ? (
+                                  <span>
+                                    <Typography variant="body2">
+                                      {this.state.top4[key][
+                                        "shortDescription"
+                                      ].slice(0, 93)}
+                                      <strong> more...</strong>
+                                    </Typography>
+                                  </span>
+                                ) : (
+                                  <Typography variant="body2">
+                                    {this.state.top4[key]["shortDescription"]}
+                                  </Typography>
+                                )}
+                              </Grid>
+                            </div>
+                          ) : (
+                            <div>
+                              <Skeleton variant="text" />
+                            </div>
+                          )}
 
                           <Grid item>
-                            {this.state.top4[key]["shortDescription"].length >
-                            100 ? (
-                              <span>
-                                <Typography variant="body2">
-                                  {this.state.top4[key][
-                                    "shortDescription"
-                                  ].slice(0, 93)}
-                                  <strong> more...</strong>
-                                </Typography>
-                              </span>
+                            {this.state.isLoaded ? (
+                              <Button
+                                onClick={() => {
+                                  this.setState({
+                                    showModal: true,
+                                    modalToShow: key,
+                                  });
+                                }}
+                              >
+                                learn more
+                              </Button>
                             ) : (
-                              <Typography variant="body2">
-                                {this.state.top4[key]["shortDescription"]}
-                              </Typography>
+                              <Skeleton
+                                variant="rect"
+                                width="100"
+                                height="50"
+                              />
                             )}
                           </Grid>
-                        </div>
-                      ) : (
-                        <div>
-                          <Skeleton variant="text" />
-                        </div>
-                      )}
-
-                      <Grid item>
-                        {this.state.isLoaded ? (
-                          <Button
-                            onClick={() => {
-                              this.setState({
-                                showModal: true,
-                                modalToShow: key,
-                              });
-                            }}
-                          >
-                            learn more
-                          </Button>
-                        ) : (
-                          <Skeleton variant="rect" width="100" height="50" />
-                        )}
-                      </Grid>
+                        </Grid>
+                      </Card>
                     </Grid>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
+                  );
+                })}
+              </Grid>{" "}
+            </div>
+          )}
 
           <Grid
             item
@@ -257,7 +278,6 @@ class HomePage extends Component {
               }}
             />
           </Grid>
-
           <Grid item>
             <Grid container column spacing={3}>
               {this.state.postData.map((post) => {
@@ -280,7 +300,7 @@ class HomePage extends Component {
                           <Grid
                             item
                             alignItems="flex-start"
-                            xs={6}
+                            xs={12}
                             md={8}
                             lg={10}
                           >
@@ -318,22 +338,24 @@ class HomePage extends Component {
                             )}
                           </Grid>
 
-                          <Grid item xs={4} md={3} lg={2}>
-                            {this.state.isLoaded ? (
-                              <img
-                                src={post.img}
-                                style={{ height: "128px", width: "128px" }}
-                              />
-                            ) : (
-                              <div>
-                                <Skeleton
-                                  variant="rect"
-                                  height="128"
-                                  width="128"
+                          {window.innerWidth > 1000 && (
+                            <Grid item xs={4} md={3} lg={2}>
+                              {this.state.isLoaded ? (
+                                <img
+                                  src={post.img}
+                                  style={{ height: "128px", width: "128px" }}
                                 />
-                              </div>
-                            )}
-                          </Grid>
+                              ) : (
+                                <div>
+                                  <Skeleton
+                                    variant="rect"
+                                    height="128"
+                                    width="128"
+                                  />
+                                </div>
+                              )}
+                            </Grid>
+                          )}
                         </Grid>
                       </Card>
                     </Grid>

@@ -43,7 +43,7 @@ function App() {
     Cookies.set("authenticated", true);
   };
 
-  const [pageToShow, setPageToShow] = useState(0);
+  const [pageToShow, setPageToShow] = useState(1);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
