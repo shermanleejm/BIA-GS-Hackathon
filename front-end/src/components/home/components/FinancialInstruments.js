@@ -31,7 +31,7 @@ export const fininstruments = [
     assetClass: "Equity",
     risk: "high",
     shortDescription:
-      "Stock (also capital stock) of a corporation, is all of the shares into which ownership of the corporation is divided.[1] In American English, the shares are collectively known as 'stock'. A single share of the stock represents fractional ownership of the corporation in proportion to the total number of shares. This typically entitles the stockholder to that fraction of the company's earnings, proceeds from liquidation of assets (after discharge of all senior claims such as secured and unsecured debt),[2] or voting power, often dividing these up in proportion to the amount of money each stockholder has invested. Not all stock is necessarily equal, as certain classes of stock may be issued for example without voting rights, with enhanced voting rights, or with a certain priority to receive profits or liquidation proceeds before or after other classes of shareholders.",
+      "Stock (also capital stock) of a corporation, is all of the shares into which ownership of the corporation is divided.[1] In American English, the shares are collectively known as 'stock'. A single share of the stock represents fractional ownership of the corporation in proportion to the total number of shares.",
   },
   {
     title: "Spot Foreign Exchange",
@@ -188,5 +188,5 @@ export const fininstruments = [
 ];
 
 export default {
-  testData,
+  fininstruments,
 };

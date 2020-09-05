@@ -7,6 +7,8 @@ import { useState } from 'react';
 import RiskProfileContainer from '../../riskProfile/containers/RiskProfileContainer';
 import LoadingOverlay from 'react-loading-overlay';
 import axios from 'axios';
+import { Paper } from "@material-ui/core";
+
 
 const QuestionContainer = () => {
     const [currentQuestion, setQuestion] = useState(0);
@@ -42,48 +44,63 @@ const QuestionContainer = () => {
             setActive(false);
             setPortfolioSent(true);
         }).catch((err) => {
+            // TODO: CHANGE VALUE TO FALSE WHEN DEPLOYING
             setPortfolioSent(true);
         })
     }
 
     return (
-        <>
+        <div className='container'>
         {
             portfolioSent ?
             <RiskProfileContainer/> :
             <LoadingOverlay
+                className='container-fluid my-5 py-5'
                 active={isActive}
                 spinner
                 text='Generating your risk portfolio...'
                 fadeSpeed={10}
-                >
-            <AgeQuestionContainer currentQuestion={currentQuestion} setAge={setAge}/>
-            <OccupationQuestionContainer currentQuestion={currentQuestion} setOccupation={setOccupation}/>
-            <SpendingQuestionContainer currentQuestion={currentQuestion} setSpending={setSpending}/>
-            <RiskQuestionContainer currentQuestion={currentQuestion} setRisk={setRisk}/>
+            >
+            <div className='row mx-auto'>
+                <div className='col d-flex align-items-center text-left'>
+                    <div>
+                        <h1>Determining your Risk Portfolio...</h1>
+                        <span>In order to get a more customized experience, please answer the following questions to allow us to generate your risk portfolio!</span>
+                    </div>
+                </div>
+                <div className={'col'}>
+                    <Paper elevation={3} className={'pb-4'} style={{"background-color": "lightgrey"}} >
+                        <AgeQuestionContainer currentQuestion={currentQuestion} setAge={setAge}/>
+                        <OccupationQuestionContainer currentQuestion={currentQuestion} setOccupation={setOccupation}/>
+                        <SpendingQuestionContainer currentQuestion={currentQuestion} setSpending={setSpending}/>
+                        <RiskQuestionContainer currentQuestion={currentQuestion} setRisk={setRisk}/>
 
-            {/* {currentQuestion === 0 ? <AgeQuestionContainer /> :
-            currentQuestion === 1 ? <OccupationQuestionContainer/> :
-            currentQuestion === 2 ? <SpendingQuestionContainer/> :
-            currentQuestion === 3 ? <RiskQuestionContainer/> : <></>} */}
+                    {/* {currentQuestion === 0 ? <AgeQuestionContainer /> :
+                    currentQuestion === 1 ? <OccupationQuestionContainer/> :
+                    currentQuestion === 2 ? <SpendingQuestionContainer/> :
+                    currentQuestion === 3 ? <RiskQuestionContainer/> : <></>} */}
 
-            {
-                currentQuestion === 0 ?
-                <input type='button' className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleNext} value='Next'/> :
-                currentQuestion !== 3 ?
-                <>
-                <input type='button' className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleBack} value='Back'/>
-                <input type='button' className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleNext} value='Next'/>
-                </>
-                :
-                <>
-                <input type='button' className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleBack} value='Back'/>
-                <button className='btn btn-lg block px-5 btn-dark mx-2' onClick={handleGenerate}>Generate my Risk Portfolio!</button>
-                </>
-            }
+                    {
+                        currentQuestion === 0 ?
+                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2 mb-4' onClick={handleNext} value='Next'/> :
+                        currentQuestion !== 3 ?
+                        <>
+                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2 mb-4' onClick={handleBack} value='Back'/>
+                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2 mb-4' onClick={handleNext} value='Next'/>
+                        </>
+                        :
+                        <>
+                        <input type='button' className='btn btn-lg block px-5 btn-dark mx-2 mb-4' onClick={handleBack} value='Back'/>
+                        <button className='btn btn-lg block px-5 btn-primary mx-2' onClick={handleGenerate}>Generate my Risk Portfolio!</button>
+                        </>
+                    }
+                    </Paper>
+                </div>
+            </div>
+
             </LoadingOverlay>
         }
-        </>
+        </div>
     )
 
 }
