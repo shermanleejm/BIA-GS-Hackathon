@@ -14,7 +14,7 @@ logging.basicConfig(filename = "console.log",
             level=logging.INFO)
 
 DB_URI = os.environ.get('DB_URI')
-
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
