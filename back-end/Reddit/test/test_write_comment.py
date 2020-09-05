@@ -1,10 +1,9 @@
 import requests
 
-url = "http://localhost:5000/post/writecomment"
+url = "http://localhost:5000/post/1/writecomment"
 
 data = {
     "userid": "Bob",
-    "postid": "4",
     "content": "It's a wonderful day!"
 }
 

@@ -1,11 +1,7 @@
 import requests
 
-url = "http://localhost:5000/post/retrievelikes"
+url = "http://localhost:5000/post/1/getlikes"
 
-data = {
-    "postid": "1"
-}
-
-response = requests.post(url, params = data)
+response = requests.get(url)
 print(response.status_code)
 print(response.text)

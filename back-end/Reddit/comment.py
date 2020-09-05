@@ -13,9 +13,19 @@ class Comment(db.Model):
         self.content = content
         self.dt = dt
 
+    def json(self):
+        return {
+            "user_id": self.user_id,
+            "post_id": self.post_id,
+            "content": self.content,
+            "dt": self.dt
+        }
+
 def write_comment(post_id, user_id, content):
 
     app.logger.info("Uploading comment")
+
+    is_successful_write = False
     try:
 
         app.logger.info(db.func.now())
@@ -29,27 +39,20 @@ def write_comment(post_id, user_id, content):
         db.session.commit()
 
         app.logger.info(f" SUCCESS: Uploaded comment from {user_id}")
-        return True
+        is_successful_write = True
 
     except:
         app.logger.info(f" FAIL: Upload comment from {user_id} failed")
-        return False
-
-def get_comments(post_id):
-    comments = Comment.query.filter_by(post_id = post_id).order_by(Comment.dt.desc()).all()
-
-    result_list = []
-
-    for com in comments:
-        com_in_dict_form = {
-            "user_id": com.user_id,
-            "content": com.content,
-            "dt": com.dt
-        }
-        result_list.append(com_in_dict_form)
-
-    results = {
-        "comments": result_list
+    
+    return {
+        "is_success": is_successful_write
     }
 
-    return results
+def get_comments(post_id):
+    """
+    Returns comments given a post_id
+    """
+    app.logger.info(f"Querying database for post_id = {post_id}")
+    comments = Comment.query.filter_by(post_id = post_id).order_by(Comment.dt.desc()).all()
+
+    return [comment.json() for comment in comments]

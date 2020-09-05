@@ -3,8 +3,8 @@ import requests
 url = "http://localhost:5000/post/create"
 
 data = {
-    "userid": "Calvin",
-    "content": "Hi everyone, this is my first post."
+    "user_id": "Calvin",
+    "content": "Hi everyone, this is my most recent post."
 }
 
 response = requests.put(url, params = data)
