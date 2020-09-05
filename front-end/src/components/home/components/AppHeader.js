@@ -35,7 +35,7 @@ class AppHeader extends Component {
 
     return (
       <ThemeProvider theme={theme}>
-        <div>
+        <div style={{ position: "sticky", width: "100vw" }}>
           <Paper style={{ flexGrow: 1, backgroundColor: "#f7f4fa" }}>
             <Tabs
               value={this.state.value}

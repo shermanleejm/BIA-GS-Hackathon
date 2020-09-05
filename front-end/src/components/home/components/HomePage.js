@@ -10,30 +10,21 @@ import {
   Paper,
   CardMedia,
   Modal,
+  Fab,
+  FormControl,
 } from "@material-ui/core";
 import { Skeleton, Autocomplete } from "@material-ui/lab";
 import fininstruments from "./FinancialInstruments";
 import edupost from "../../education/components/EducationPosts";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-
-// {
-// 	futures: {
-// 		risk: "low",
-// 		description: "lorem ipsum",
-// 		top5: false,
-// 	},
-// 	stocks: {
-// 		risk: "high",
-// 		description: "lorem ipsum"
-// 		top5: true,
-// 	}
-// }
+import AddIcon from "@material-ui/icons/Add";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
-    var filterOptions = ["Recommended", "Friends", "Partners"];
-    console.log(filterOptions[Math.floor(Math.random() * 3)]);
+    var filterOptions = ["Recommended", "Watch List", "Friends"];
 
     var finData = fininstruments.fininstruments;
     var top4 = finData.slice(0, 4);
@@ -43,7 +34,7 @@ class HomePage extends Component {
     edupost.postData.map((row) => {
       tempArr = {
         title: row.title,
-        category: filterOptions[Math.floor(Math.random() * 3)],
+        category: filterOptions[Math.floor(Math.random() * 1)],
         shortDescription: row.shortDescription,
         img: row.img,
         url: row.link,
@@ -60,6 +51,9 @@ class HomePage extends Component {
       postData: postData,
       showModal: false,
       modalToShow: 0,
+      showNewPost: false,
+      postTitle: "",
+      postContent: "",
     };
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -82,6 +76,100 @@ class HomePage extends Component {
   render() {
     return (
       <div>
+        <div
+          style={{
+            margin: 0,
+            top: "auto",
+            right: 20,
+            bottom: 20,
+            left: "auto",
+            position: "fixed",
+          }}
+        >
+          <Fab
+            color="primary"
+            onClick={() => {
+              this.setState({ showNewPost: true });
+              console.log(this.state.showNewPost);
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </div>
+
+        {this.state.showNewPost && (
+          <Modal
+            open={this.state.showNewPost}
+            onClose={() => this.setState({ showNewPost: false })}
+          >
+            <div
+              style={{
+                position: "fixed",
+                outline: 0,
+                top: "25%",
+                left: "50%",
+                transform: "translate(-50%, -25%)",
+                backgroundColor: "#ffffff",
+                margin: "auto",
+              }}
+            >
+              <Paper style={{ padding: "20px", width: "80vw" }}>
+                <Grid
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="stretch"
+                  spacing={3}
+                >
+                  <Grid item>
+                    <TextField
+                      requried
+                      label="Title"
+                      fullWidth
+                      onChange={(event) => {
+                        this.setState({ postTitle: event.target.value });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      required
+                      multiline
+                      rows={4}
+                      fullWidth
+                      label="Content"
+                      onChange={(event) => {
+                        this.setState({ postTitle: event.target.value });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      onClick={() => {
+                        axios.post(
+                          "http://" +
+                            process.env.REACT_APP_PUBLIC_IP +
+                            ":/5000/post/create/",
+                          {
+                            userid: Cookies.get("userid"),
+                            content:
+                              this.state.postTitle +
+                              "SHERMANROX" +
+                              this.state.postContent,
+                          }
+                        );
+                        this.setState({ showNewPost: false });
+                      }}
+                    >
+                      Submit post
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </div>
+          </Modal>
+        )}
+
         {this.state.showModal && (
           <Modal
             open={this.state.showModal}
@@ -158,7 +246,7 @@ class HomePage extends Component {
           spacing={3}
           style={{ maxWidth: "80vw", margin: "auto" }}
         >
-          {window.innerWidth > 1000 && (
+          {window.innerWidth > 900 && (
             <div>
               <Typography
                 variant="h6"
@@ -173,26 +261,28 @@ class HomePage extends Component {
                 profile:
               </Typography>
               <Grid
-                item
                 container
                 direction="row"
                 justify="center"
-                alignItems="center"
+                alignItems="stretch"
                 spacing={2}
               >
                 {Object.keys(this.state.top4).map((key) => {
                   return (
                     <Grid item md={3} xs={12} lg={3}>
-                      <Card style={{}}>
+                      <Paper
+                        style={{
+                          height: "100%",
+                          textAlign: "left",
+                          padding: "20px",
+                        }}
+                      >
                         <Grid
                           container
+                          direction="column"
                           justify="space-between"
-                          style={{
-                            padding: "10px",
-                            textAlign: "left",
-                            minWidth: "19vw",
-                            height: "19vh",
-                          }}
+                          alignItems="flex-start"
+                          style={{ height: "100%" }}
                         >
                           {this.state.isLoaded ? (
                             <div>
@@ -247,11 +337,11 @@ class HomePage extends Component {
                             )}
                           </Grid>
                         </Grid>
-                      </Card>
+                      </Paper>
                     </Grid>
                   );
                 })}
-              </Grid>{" "}
+              </Grid>
             </div>
           )}
 
