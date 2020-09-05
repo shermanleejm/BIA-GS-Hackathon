@@ -2,8 +2,9 @@ from app import app, db
 
 class Friend(db.Model):
 
-    sender_id = db.Column(db.String(), primary_key = True)
-    receiver_id = db.Column(db.String(), primary_key = True)
+    friend_id = db.Column(db.Integer, primary_key = True)
+    sender_id = db.Column(db.String())
+    receiver_id = db.Column(db.String())
 
     def __init__(self, sender_id, receiver_id):       
         self.sender_id = sender_id
@@ -15,11 +16,11 @@ def connect(sender_id, receiver_id):
     is_connection_success = False
 
     # try:
-    new_friend = Friend(sender_id, receiver_id)
+    new_friend = Friend(sender_id = sender_id, receiver_id = receiver_id)
     db.session.add(new_friend)
     db.session.commit()
 
-    friend_reverse = Friend(receiver_id, sender_id)
+    friend_reverse = Friend(sender_id = receiver_id, receiver_id = sender_id)
     db.session.add(friend_reverse)
     db.session.commit()
 

@@ -1,11 +1,11 @@
 import requests
 import json
 
-url = "http://localhost:5000/friend/connect"
+url = "http://13.229.107.243:5001/friend/connect"
 
 data = {
-    "sender_id": "Jill",
-    "receiver_id": "Bob" 
+    "sender_id": "Heather",
+    "receiver_id": "Edwin" 
 }
 
 response = requests.post(url, data = json.dumps(data))
