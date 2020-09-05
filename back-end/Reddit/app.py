@@ -15,7 +15,6 @@ logging.basicConfig(filename = "console.log",
 
 DB_URI = os.environ.get('DB_URI')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -54,12 +53,13 @@ def profile_user():
 @app.route("/login/authenticate", methods = ['POST'])
 def authenticate_login():
 
-    data = json.loads(request.get_json()) 
+    data = json.loads(request.data)
+
     username = data['user_id'] 
     password = data['password']
 
     app.logger.info(f"Authenticating login for {username}")
-    
+
     return jsonify(user.authenticate_user(username, password))
 
 @app.route("/login/checkfirstlogin/<user_id>", methods = ['GET'])
