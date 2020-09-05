@@ -12,9 +12,9 @@ import {
   Modal,
 } from "@material-ui/core";
 import { Skeleton, Autocomplete } from "@material-ui/lab";
-import postImg from "../../../images/post_img.JPG";
 import fininstruments from "./FinancialInstruments";
 import edupost from "../../education/components/EducationPosts";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 
 // {
 // 	futures: {
@@ -47,6 +47,7 @@ class HomePage extends Component {
         shortDescription: row.shortDescription,
         img: row.img,
         url: row.link,
+        likes: Math.floor(Math.random() * 1000),
       };
       postData.push(tempArr);
     });
@@ -291,6 +292,20 @@ class HomePage extends Component {
                                 <Typography variant="body2">
                                   {post.shortDescription}
                                 </Typography>
+
+                                <Grid
+                                  container
+                                  direction="row"
+                                  justify="flex-start"
+                                  alignItems="center"
+                                  spacing={3}
+                                  style={{ paddingTop: "10px" }}
+                                >
+                                  <Grid item>
+                                    <ThumbUpIcon />
+                                  </Grid>
+                                  <Grid item>{post.likes}</Grid>
+                                </Grid>
                               </CardContent>
                             ) : (
                               <div
