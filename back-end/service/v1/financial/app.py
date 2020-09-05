@@ -71,6 +71,43 @@ class Term(db.Model):
             "body": self.body
         }
 
+
+class StockPrice(db.Model):
+
+    stockpriceID = db.Column(db.Integer, primary_key=True)
+    ticker = db.Column(db.String(12))
+    date = db.Column(db.DateTime)
+    openn = db.Column(db.Float)
+    high = db.Column(db.Float)
+    low = db.Column(db.Float)
+    close = db.Column(db.Float)
+    adjclose = db.Column(db.Float)
+    volume = db.Column(db.Integer)
+
+
+    def __init__(self, ticker, date, openn, high, low, close, adjclose, volume):
+        self.ticker = ticker
+        self.date = date
+        self.openn = openn
+        self.high = high
+        self.low = low
+        self.close = close
+        self.adjclose = adjclose
+        self.volume = volume
+
+    def json(self):
+        return {
+            "ticker": self.ticker,
+            "date": self.date,
+            "openn": self.openn,
+            "high": self.high,
+            "low": self.low,
+            "close": self.close,
+            "adjclose": self.adjclose,
+            "volume": self.volume
+        }
+
+
 @app.route("/")
 def index():
     return 'hello world', 200
@@ -125,6 +162,35 @@ def add_term():
     db.session.commit()
     
     return {"message": f"Term {term.term} has been created successfully."}
+
+
+# For initial adding of Stock Price
+@app.route('/add_stockprice', methods=['POST'])
+def add_stockprice():
+    data = json.loads(request.get_json())
+    stockprice = StockPrice(**data)
+    db.session.add(stockprice)
+    db.session.commit()
+    
+    return {"message":  "has been created successfully."}
+
+
+@app.route("/stock_price/<symbol>", methods=["GET"])
+def get_stock_prices(symbol):
+    stock_prices = StockPrice.query.filter_by(ticker=symbol).all()
+
+    if stock_prices != []:
+        result = []
+        for stock_price in stock_prices:
+            stock_price_json = stock_price.json()
+            row = {
+                "x": str(stock_price_json['date'].strftime("%d/%m/%Y")),
+                "y": stock_price_json['close']
+            }
+            result.append(row)
+        return jsonify(result), 200
+        # return jsonify([stock_price.json() for stock_price in stock_prices]), 200
+    return "Symbol not found", 400
         
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
