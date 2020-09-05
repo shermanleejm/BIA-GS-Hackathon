@@ -1,16 +1,19 @@
 import requests
+import json
 
 url = "http://localhost:5000/post/togglelike"
 
 data = {
-    "userid": "Bob",
+    "user_id": "Bob",
     "postid": "4"
 }
 
-response = requests.post(url, params = data)
+# Once to like
+response = requests.post(url, data = json.dumps(data))
 print(response.status_code)
 print(response.text)
 
-response = requests.post(url, params = data)
+# Once to dislike
+response = requests.post(url, data = json.dumps(data))
 print(response.status_code)
 print(response.text)

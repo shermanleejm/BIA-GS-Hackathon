@@ -34,18 +34,22 @@ def home():
 @app.route("/login/register", methods = ['PUT'])
 def register_user():
 
-    username = request.args.get('user_id') 
-    password = request.args.get('password')
+    data = json.loads(request.data)
+    username = data['user_id']
+    password = data['password']
     
     return jsonify(user.register_user(username, password))
 
 @app.route("/login/profiling", methods = ['PUT'])
 def profile_user():
-    username = request.args.get('user_id')
-    age = request.args.get('age')
-    occupation = request.args.get('occupation')
-    spending = request.args.get('spending')
-    risk = request.args.get('risk')
+
+    data = json.loads(request.data)
+    
+    username = data['user_id']
+    age = data['age']
+    occupation = data['occupation']
+    spending = data['spending']
+    risk = data['risk']
 
     return jsonify(user.profile_user(username, age, occupation,
                                             spending, risk))
@@ -53,8 +57,7 @@ def profile_user():
 @app.route("/login/authenticate", methods = ['POST'])
 def authenticate_login():
 
-    data = json.loads(request.data)
-
+    data = json.loads(request.data)    
     username = data['user_id'] 
     password = data['password']
 
@@ -72,9 +75,9 @@ def check_first_login(user_id):
 # friend
 @app.route("/friend/connect", methods = ['POST'])
 def connect_two_users():
-
-    sender_id = request.args.get('sender_id')
-    receiver_id = request.args.get('receiver_id')
+    data = json.loads(request.data)
+    sender_id = data['sender_id']
+    receiver_id = data['receiver_id']
 
     # Currently, no way to 'delete' the friendship
 
@@ -93,33 +96,37 @@ def get_post_from(user_id):
 
 @app.route("/post/create", methods = ['PUT'])
 def create_post():
-    user_id = request.args.get('user_id')
-    content = request.args.get('content')
+    data = json.loads(request.data)
+    user_id = data['user_id']
+    title = data['title']
+    content = data['content']
+    image_url = data['image_url']
 
-    return jsonify(post.create_post(user_id, content))
+    return jsonify(post.create_post(user_id, title, content))
 
 @app.route("/post/togglelike", methods = ["POST"])
 def like_post():
-    user_id = request.args.get('user_id')
-    post_id = request.args.get('postid')
+    data = json.loads(request.data)
+    user_id = data['user_id']
+    post_id = data['postid']
 
     return jsonify(like.toggle_like(post_id, user_id))
 
-@app.route("/post/<post_id>/getlikes", methods = ["GET"])
+@app.route("/post/getlikes/<post_id>", methods = ["GET"])
 def get_likes(post_id):
     likes = like.get_like_info(post_id)
 
     return jsonify(likes)
 
-@app.route("/post/<post_id>/writecomment", methods = ["PUT"])
+@app.route("/post/writecomment/<post_id>", methods = ["PUT"])
 def write_comment(post_id):
-
-    user_id = request.args.get('user_id') # this is the one who is posting
-    content = request.args.get('content')
+    data = json.loads(request.data)
+    user_id = data['user_id'] # this is the one who is posting
+    content = data['content']
 
     return jsonify(comment.write_comment(post_id, user_id, content))
 
-@app.route("/post/<post_id>/getcomments", methods = ["GET"])
+@app.route("/post/getcomments/<post_id>", methods = ["GET"])
 def get_comments(post_id):
 
     comments = comment.get_comments(post_id)
@@ -127,13 +134,16 @@ def get_comments(post_id):
     return jsonify(comments)
 
 # Watchlist
-@app.route("/watchlist/<user_id>/<product>/toggle_add", methods = ["POST"])
-def toggle_add(user_id, product):
+@app.route("/watchlist/toggle_add", methods = ["POST"])
+def toggle_add():
+    data = json.loads(request.data)
+    user_id = data['user_id']
+    product = data['product']
 
     return jsonify(watchlist.toggle_add_to_watchlist(
                                 user_id, product))
 
-@app.route("/watchlist/<user_id>/getall", methods = ["GET"])
+@app.route("/watchlist/getall/<user_id>", methods = ["GET"])
 def get_watchlist(user_id):
     user_watchlist = watchlist.get_watchlist(user_id)
     return jsonify(user_watchlist)
@@ -144,7 +154,7 @@ def get_all_users():
     users = user.get_users()
     return jsonify(users)
 
-@app.route("/user/<user_id>/getuserinfo", methods = ['GET'])
+@app.route("/user/getuserinfo/<user_id>", methods = ['GET'])
 def get_user_info(user_id):
 
     user_info = user.get_user_details_from_list([user_id])
@@ -161,7 +171,7 @@ def get_user_info(user_id):
     
     return jsonify(user_details)
 
-@app.route("/user/<user_id>/getfriends", methods = ["GET"])
+@app.route("/user/getfriends/<user_id>", methods = ["GET"])
 def get_friends(user_id):
     
     friend_ids = friend.get_friends(user_id)
@@ -169,12 +179,13 @@ def get_friends(user_id):
     
     return jsonify(friends), 200
 
-@app.route("/user/<user_id>/getstrangers", methods = ['GET'])
+@app.route("/user/getstrangers/<user_id>", methods = ['GET'])
 def get_non_friends(user_id):
 
     all_users = user.get_users()
     friend_ids = friend.get_friends(user_id)
-    friends = user.get_user_details_from_list(friend_ids)
+    friends = user.get_user_details_from_list(friend_ids) + \
+        user.get_user_details_from_list([user_id])
     
     non_friends = [user for user in all_users if user not in friends]
 

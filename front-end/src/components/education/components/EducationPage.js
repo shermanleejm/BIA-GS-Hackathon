@@ -9,8 +9,14 @@ import {
   CardActionArea,
   CardActions,
   Button,
+  TextField,
+  InputAdornment,
+  Fab,
 } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
 import postData from "./EducationPosts";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import stonks from "./stonks.jpg";
 
 class EducationPage extends Component {
   constructor(props) {
@@ -20,7 +26,10 @@ class EducationPage extends Component {
     this.state = {
       categories: categories,
       data: postData.postData,
+      prevTopic: categories[0],
       topic: categories[0],
+      searching: false,
+      searchValue: "",
     };
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -28,6 +37,10 @@ class EducationPage extends Component {
 
   componentDidMount() {
     // fetch("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/");
+    if (localStorage.getItem("skipReload") === null) {
+      window.location.reload();
+    }
+    localStorage.setItem("skipReload", "true");
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
   }
@@ -40,6 +53,54 @@ class EducationPage extends Component {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
+  searchBar() {
+    return (
+      <span style={{ float: "right" }}>
+        <TextField
+          // label="search Financial Terms"
+          placeholder="search Financial Terms"
+          value={this.state.searchValue}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          onChange={(event) => {
+            this.setState({ searchValue: event.target.value });
+
+            if (event.target.value === null || event.target.value === "") {
+              this.setState({ data: postData.postData });
+            } else {
+              fetch(
+                "http://" +
+                  process.env.REACT_APP_PUBLIC_IP +
+                  ":8000/term/" +
+                  event.target.value
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                  var newData = [
+                    {
+                      title: data.term,
+                      shortDescription: data.body,
+                      tag: "Search",
+                      link: data.link,
+                      img: stonks,
+                    },
+                  ];
+
+                  this.setState({ data: newData, topic: "Search" });
+                });
+            }
+          }}
+        />
+      </span>
+    );
+  }
+
   render() {
     return (
       <div
@@ -48,8 +109,30 @@ class EducationPage extends Component {
           margin: "auto",
           paddingTop: "20px",
           backgroundColor: "#ffffff",
+          height: "100%",
         }}
       >
+        <div
+          style={{
+            margin: 0,
+            top: "auto",
+            right: window.innerWidth > 800 ? 20 : 5,
+            bottom: window.innerWidth > 800 ? 20 : 5,
+            left: "auto",
+            position: "fixed",
+            zIndex: 100,
+          }}
+        >
+          <Fab
+            color="primary"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </div>
+
         <div>
           <Typography
             variant="h3"
@@ -72,14 +155,18 @@ class EducationPage extends Component {
               <Typography
                 variant="subtitle1"
                 style={{
-                  paddingTop: "20px",
+                  paddingTop: "10px",
                   paddingRight: "20px",
                   display: "inline-block",
                 }}
               >
                 <span
                   onClick={() => {
-                    this.setState({ topic: word });
+                    this.setState({
+                      topic: word,
+                      searchValue: "",
+                      data: postData.postData,
+                    });
                   }}
                   style={{ cursor: "pointer" }}
                 >
@@ -88,9 +175,13 @@ class EducationPage extends Component {
               </Typography>
             );
           })}
+
+          {window.innerWidth > 800 && this.searchBar()}
         </div>
 
-        <Paper elevation={3} style={{ padding: "10px" }}>
+        {window.innerWidth < 800 && this.searchBar()}
+
+        <Paper elevation={3} style={{ padding: "20px" }}>
           <Grid
             container
             direction="row"

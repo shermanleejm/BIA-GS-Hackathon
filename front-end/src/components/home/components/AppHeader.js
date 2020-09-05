@@ -12,6 +12,8 @@ import {
 import HomeIcon from "@material-ui/icons/Home";
 import SchoolIcon from "@material-ui/icons/School";
 import PeopleIcon from "@material-ui/icons/People";
+import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { TabPanel } from "@material-ui/lab";
 
 class AppHeader extends Component {
@@ -44,15 +46,17 @@ class AppHeader extends Component {
                   value: newValue,
                 });
                 this.props.headerCallback(newValue);
-                localStorage.setItem("pageToShow", newValue)
+                localStorage.setItem("pageToShow", newValue);
                 console.log(this.state.value);
               }}
               indicatorColor="primary"
               centered
             >
-              <Tab icon={<HomeIcon />} label="Home"/>
-              <Tab icon={<SchoolIcon />} label="Learn"/>
-              <Tab icon={<PeopleIcon />} label="Friends"/>
+              <Tab icon={<HomeIcon />} label="Home" />
+              <Tab icon={<SchoolIcon />} label="Learn" />
+              <Tab icon={<PeopleIcon />} label="Friends" />
+              <Tab icon={<SportsEsportsIcon />} label="Game" />
+              <Tab icon={<AccountCircleIcon />} label="User" />
             </Tabs>
           </Paper>
         </div>
