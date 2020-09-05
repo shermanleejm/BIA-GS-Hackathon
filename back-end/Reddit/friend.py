@@ -27,3 +27,16 @@ def connect(sender_id, receiver_id):
 
         return False
 
+    
+def get_friends(user_id):
+    """
+    takes in user_id and return a list of friend's user_ids (friends)
+    """
+    app.logger.info(f"Querying database to obtain friends user_id: {user_id}")
+
+    connections = Friend.query.filter_by(sender_id=user_id).all()
+
+    friends = [connection.receiver_id for connection in connections]
+
+    return friends
+
