@@ -69,7 +69,7 @@ const QuestionContainer = () => {
                     </div>
                 </div>
                 <div className={'col'}>
-                    <Paper elevation={3} className={'pb-4'} style={{"background-color": "lightgrey"}} >
+                    <Paper elevation={3} className={'pb-4 text-center'} style={{"background-color": "lightgrey"}} >
                         <AgeQuestionContainer currentQuestion={currentQuestion} setAge={setAge}/>
                         <OccupationQuestionContainer currentQuestion={currentQuestion} setOccupation={setOccupation}/>
                         <SpendingQuestionContainer currentQuestion={currentQuestion} setSpending={setSpending}/>
