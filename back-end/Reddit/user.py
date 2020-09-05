@@ -3,7 +3,7 @@ from app import app, db
 class User(db.Model):
     user_id = db.Column(db.String(), primary_key = True)
     password = db.Column(db.String())
-    age = db.Column(db.Integer)
+    age = db.Column(db.String())
     occupation = db.Column(db.String())
     spending = db.Column(db.String())
     risk = db.Column(db.String())
