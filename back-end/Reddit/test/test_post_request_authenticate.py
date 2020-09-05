@@ -1,21 +1,38 @@
 import requests
 
-url = "http://localhost:5000/login/authenticate"
+url = "http://13.229.107.243:8001/login/authenticate"
+
+# data = {
+#     "user_id": "Bob",
+#     "password": "bob1"
+# }
+
+# response = requests.post(url, params = data)
+# print(response.text) # Should return True
+
+# data = {
+#     "user_id": "Bob",
+#     "password": "bob2"
+# }
+
+# response = requests.post(url, params = data)
+# print(response.text) # should return False
 
 data = {
-    "user_id": "Bob",
-    "password": "bob1"
+    "user_id": "Apple",
+    "password": "apple1"
 }
 
-response = requests.post(url, params = data)
-print(response.status_code)
-print(response.text) # Should return True
+json.loads(request.get_json())
 
-data = {
-    "user_id": "Bob",
-    "password": "bob2"
-}
-
+print(url)
 response = requests.post(url, params = data)
-print(response.status_code)
-print(response.text) # should return False
+print(response.text) # should return True
+
+# data = {
+#     "user_id": "Nicholas",
+#     "password": "nicholas1"
+# }
+
+# response = requests.post(url, params = data)
+# print(response.text) # should return False

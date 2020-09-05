@@ -4,7 +4,6 @@ import logging
 import settings
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -20,7 +19,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 import post
 import user
@@ -37,14 +35,14 @@ def home():
 @app.route("/login/register", methods = ['PUT'])
 def register_user():
 
-    username = request.args.get('userid') 
+    username = request.args.get('user_id') 
     password = request.args.get('password')
     
     return jsonify(user.register_user(username, password))
 
 @app.route("/login/profiling", methods = ['PUT'])
 def profile_user():
-    username = request.args.get('userid')
+    username = request.args.get('user_id')
     age = request.args.get('age')
     occupation = request.args.get('occupation')
     spending = request.args.get('spending')
@@ -56,8 +54,9 @@ def profile_user():
 @app.route("/login/authenticate", methods = ['POST'])
 def authenticate_login():
 
-    username = request.args.get('user_id') 
-    password = request.args.get('password')
+    data = json.loads(request.get_json()) 
+    username = data['user_id'] 
+    password = data['password']
 
     app.logger.info(f"Authenticating login for {username}")
     
@@ -101,7 +100,7 @@ def create_post():
 
 @app.route("/post/togglelike", methods = ["POST"])
 def like_post():
-    user_id = request.args.get('userid')
+    user_id = request.args.get('user_id')
     post_id = request.args.get('postid')
 
     return jsonify(like.toggle_like(post_id, user_id))
@@ -115,7 +114,7 @@ def get_likes(post_id):
 @app.route("/post/<post_id>/writecomment", methods = ["PUT"])
 def write_comment(post_id):
 
-    user_id = request.args.get('userid') # this is the one who is posting
+    user_id = request.args.get('user_id') # this is the one who is posting
     content = request.args.get('content')
 
     return jsonify(comment.write_comment(post_id, user_id, content))
@@ -180,6 +179,8 @@ def get_non_friends(user_id):
     non_friends = [user for user in all_users if user not in friends]
 
     return jsonify(non_friends), 200
+
+# qotw
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
