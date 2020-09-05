@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import './index.css';
 import App from './components/app/App';
+import TempApp from "./components/app/TempApp";
 import * as serviceWorker from './serviceWorker';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -9,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <App />
     {/* <Router>
       <div className='container'>
         <Switch>

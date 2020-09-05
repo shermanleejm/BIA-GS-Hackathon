@@ -26,7 +26,7 @@ function App() {
         .get(
           "http://" +
             process.env.REACT_APP_PUBLIC_IP +
-            ":5000/login/checkfirstlogin",
+          ":5000/login/checkfirstlogin",
           { params: data }
         )
         .then((res) => {
@@ -43,7 +43,7 @@ function App() {
     Cookies.set("authenticated", true);
   };
 
-  const [pageToShow, setPageToShow] = useState(1);
+  const [pageToShow, setPageToShow] = useState(0);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
@@ -60,10 +60,10 @@ function App() {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#ffffff" }}>
       {isAuthenticated ? (
         localStorage.getItem("newUser") !== "false" ? (
-          <div className="App container mt-5">
+          <div className="App container mt-5" style={{ height: "100vh", backgroundColor: "#ffffff" }}>
             <QuestionContainer />
           </div>
         ) : (

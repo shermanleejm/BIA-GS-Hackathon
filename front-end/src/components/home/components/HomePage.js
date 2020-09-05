@@ -158,7 +158,7 @@ class HomePage extends Component {
           spacing={3}
           style={{ maxWidth: "80vw", margin: "auto" }}
         >
-          {window.innerHeight > 1000 && (
+          {window.innerWidth > 1000 && (
             <div>
               <Typography
                 variant="h6"
