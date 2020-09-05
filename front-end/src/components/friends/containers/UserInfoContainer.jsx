@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
+import { Row, Container } from 'react-bootstrap';
 import UserBannerComponent from '../components/UserBannerComponent';
 import UserWatchlistComponent from '../components/UserWatchlistComponent';
 import UserPostComponent from '../components/UserPostComponent';
@@ -11,19 +11,20 @@ const UserInfoContainer = (props) => {
     let watchlists;
     let posts;
     let info;
-    if (userData) {
-        watchlists = userData.watchlists;
+    if (props.userData) {
+        watchlists = userData.watchlist;
         posts = userData.posts;
         info = userData.info;
+        console.log(info)
     }
 
     // const watchlists = ["AAPL", "TSLA", "CLDR", "GOOGL", "EBAY"]
 
     return (
-        <div className="d-block ">
+        userData && userData.length !== 0 ? <div className="d-block ">
             <Paper elevation={3} className={'py-3 px-3 mb-4'}>
                 <Row>
-                    <UserBannerComponent/>
+                    <UserBannerComponent info={info}/>
                 </Row>
             </Paper>
             <Paper elevation={3} className={'py-3 px-3 mb-4'}>
@@ -46,7 +47,9 @@ const UserInfoContainer = (props) => {
                     <UserPostComponent posts={posts}/>
                 </Row>
             </Paper>
-        </div>
+        </div> : <Container elevation={3} className={'py-3 px-3 mb-4 '}>
+                <h3 className='font-weight-light font-weight-bold align-middle' style={{color:"grey"}}>Select people's names to preview their profile</h3>
+            </Container>
     )
 }
 

@@ -7,24 +7,31 @@ import axios from 'axios';
 import { Paper } from '@material-ui/core';
 import Cookies from 'js-cookie';
 const FriendsPage = (props) => {
-    const [userData, setUserData] = useState();
+    const [userData, setUserData] = useState([]);
+    const [friends, setFriends] = useState();
 
-    const handleClick = (userid) => {
-        axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getuserinfo/${userid}`).then(res => {
-            setUserData(res.data);
-            console.log(res.data)
-        })
+    useEffect(()=> {
+        setFriends(props.friends);
+        console.log(props.friends)
+    }, [props.friends])
 
-
+    const handleClick = (data) => {
+        setUserData(data);
     }
+
+    const addNewFriend = (friendData) => {
+        setFriends(friends.push(friendData.info.user_id));
+        setUserData(userData.push(friendData))
+    }
+
     return (
         <div className='row mt-5 justify-content-center' style={{'maxWidth': '80vw', 'minWidth':'80vw', 'margin': 'auto'}}>
             <div className='overflow-scroll mb-5'>
                 <Paper elevation={3} style={{minWidth: "350px"}} className={'d-flex align-content-center'}>
                     <div className='mx-auto mt-3'>
                         <input className="form-control mr-sm-2 mb-4 pr-2" type="search" placeholder="Search" aria-label="Search"/>
-                        <AddFriendsListComponent handleUserSelect={handleClick} suggestedFriends={props.suggestedFriends}/>
-                        <FriendWatchListComponent handleUserSelect={handleClick}/>
+                        <AddFriendsListComponent handleUserSelect={handleClick} suggestedFriends={props.suggestedFriends} addNewFriend={addNewFriend} />
+                        <FriendWatchListComponent handleUserSelect={handleClick} friends={friends}/>
                     </div>
                 </Paper>
             </div>

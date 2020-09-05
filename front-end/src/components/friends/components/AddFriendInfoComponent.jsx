@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import axios from 'axios';
@@ -10,19 +10,27 @@ const AddFriendInfoComponent = (props) => {
     const name = friend.user_id;
     const userid = friend.user_id;
     const [hidden, setHidden] = useState(false);
+    const [friendData, setFriendData] = useState();
+    useEffect(() => {
+        axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getuserinfo/${userid}`).then(res => {
+            setFriendData(res.data);
+        })
+    }, [])
 
     const handleClick = () => {
         const data = {
             sender_id: Cookies.get('userid'),
             receiver_id: userid
         }
-        axios.post("http://" + process.env.REACT_APP_PUBLIC_IP + ":8000/friend/connect", data).then(res =>{
+
+        axios.post("http://" + process.env.REACT_APP_PUBLIC_IP + ":5001/friend/connect", data).then(res =>{
             setHidden(true);
+            props.addNewFriend(friendData)
         }).catch(err=>{setHidden(true)})
     }
 
     const handleUserSelect = () => {
-        props.handleUserSelect(userid);
+        props.handleUserSelect(friendData);
     }
     return (
         <Row className={'ml-2'} hidden={hidden} style={{maxWidth:'380px'}} onClick={handleUserSelect}>

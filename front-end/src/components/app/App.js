@@ -15,6 +15,7 @@ function App() {
   const [isAuthenticated, setAuthenticated] = useState();
   const [isFirstTimeUser, setFirstTimeUser] = useState(true);
   const [suggestedFriends, setSuggestedFriends] = useState();
+  const [friends, setFriends] = useState();
 
   useEffect(() => {
     setAuthenticated(Cookies.get("authenticated"));
@@ -23,6 +24,11 @@ function App() {
         "http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getstrangers/${userid}`
     ).then(res => {
         setSuggestedFriends(res.data.slice(0,3));
+    })
+
+    axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getuserinfo/${userid}`).then(res => {
+      console.log(res);
+      setFriends(res.data.friend_id_list);
     })
   }, []);
 
@@ -35,7 +41,7 @@ function App() {
         .get(
           "http://" +
             process.env.REACT_APP_PUBLIC_IP +
-            ":5000/login/checkfirstlogin",
+            ":5001/login/checkfirstlogin",
           { params: data }
         )
         .then((res) => {
@@ -54,7 +60,7 @@ function App() {
     window.location.reload();
   };
 
-  const [pageToShow, setPageToShow] = useState(3);
+  const [pageToShow, setPageToShow] = useState(2);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
@@ -66,7 +72,7 @@ function App() {
       case 1:
         return <EducationPage />;
       case 2:
-        return <FriendsPage suggestedFriends={suggestedFriends}/>;
+        return <FriendsPage suggestedFriends={suggestedFriends} friends={friends}/>;
       case 3:
         return <MCQGame />;
     }

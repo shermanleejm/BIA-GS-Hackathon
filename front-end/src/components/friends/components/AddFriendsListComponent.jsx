@@ -4,11 +4,7 @@ import { Row } from 'react-bootstrap';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 const AddFriendsListComponent = (props) => {
-    // const [suggestedFriends, setSuggestedFriends] = useState();
     const suggestedFriends = props.suggestedFriends;
-    // const suggestedFriends = [
-    //     {name: 'john', occupation: 'doctor', risk: 'high', user_id:'john'}, {name:'jill', occupation: 'doctor', risk: 'high',user_id:'jill'}, {name: 'jack', occupation: 'doctor', risk: 'high',user_id:'jack'}
-    // ]
 
     const handleUserSelect = (userid) => {
         props.handleUserSelect(userid);
@@ -21,13 +17,16 @@ const AddFriendsListComponent = (props) => {
     //         setSuggestedFriends(res.data.slice(0,3));
     //     })
     // },[])
+    const addNewFriend = (friendData) => {
+        props.addNewFriend(friendData);
+    }
 
     return (
         <>
             <h2 className='font-italic pb-2'>Suggested Friends</h2>
 
             { suggestedFriends ? suggestedFriends.map((friend, index) => {
-                return <AddFriendInfoComponent key={friend.user_id} friend={friend} index={index} handleUserSelect={handleUserSelect}/>
+                return <AddFriendInfoComponent key={friend.user_id} friend={friend} index={index} handleUserSelect={handleUserSelect} addNewFriend={addNewFriend}/>
             }) : <></>}
         </>
     )
