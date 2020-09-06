@@ -2,7 +2,7 @@ from app import app, db
 
 class Watchlist(db.Model):
 
-    w_id = db.Column(db.Integer, primary_key = True)
+    watchlist_id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.String())
     product = db.Column(db.String())
 
@@ -29,6 +29,8 @@ def toggle_add_to_watchlist(user_id, product):
         app.logger.info(f" SUCCESS: {user_id} is no longer having {product} on the watchlist")
         
     db.session.commit()
+    db.session.close()
+    
     return {
         "is_successful_toggle": True
     }

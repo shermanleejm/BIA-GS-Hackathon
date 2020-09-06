@@ -2,7 +2,7 @@ from app import app, db
 
 class Friend(db.Model):
 
-    friend_id = db.Column(db.Integer, primary_key = True)
+    friendship_id = db.Column(db.Integer, primary_key = True)
     sender_id = db.Column(db.String())
     receiver_id = db.Column(db.String())
 
@@ -15,19 +15,21 @@ def connect(sender_id, receiver_id):
 
     is_connection_success = False
 
-    # try:
-    new_friend = Friend(sender_id = sender_id, receiver_id = receiver_id)
-    db.session.add(new_friend)
-    db.session.commit()
+    try:
+        new_friend = Friend(sender_id = sender_id, receiver_id = receiver_id)
 
-    friend_reverse = Friend(sender_id = receiver_id, receiver_id = sender_id)
-    db.session.add(friend_reverse)
-    db.session.commit()
+        db.session.add(new_friend)
 
-    app.logger.info(" SUCCESS: Friendship formed.")
-    is_connection_success = True
-    # except:
-    #     app.logger.info(" FAIL: Error in forming friendship.")
+        friend_reverse = Friend(sender_id = receiver_id, receiver_id = sender_id)
+        db.session.add(friend_reverse)
+        db.session.flush()
+        db.session.commit()
+        db.session.close()
+        
+        app.logger.info(" SUCCESS: Friendship formed.")
+        is_connection_success = True
+    except:
+        app.logger.info(" FAIL: Error in forming friendship.")
 
     return {
         "is_success": is_connection_success
@@ -57,6 +59,9 @@ def get_friends(user_id):
     connections = Friend.query.filter_by(sender_id=user_id).all()
 
     friends = [connection.receiver_id for connection in connections]
+
+    # Temporary code to remove duplicates
+    friends = list(set(friends))
 
     return friends
 

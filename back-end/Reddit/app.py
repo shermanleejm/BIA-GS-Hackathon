@@ -105,7 +105,7 @@ def create_post():
     content = data['content']
     image_url = data['image_url']
 
-    return jsonify(post.create_post(user_id, title, content))
+    return jsonify(post.create_post(user_id, title, content, image_url))
 
 @app.route("/post/togglelike", methods = ["POST"])
 def like_post():
@@ -135,6 +135,20 @@ def get_comments(post_id):
     comments = comment.get_comments(post_id)
     
     return jsonify(comments)
+
+
+@app.route("/post/getpostsfromfriends/<user_id>", methods = ["GET"])
+def get_posts_from_friends(user_id):
+
+    list_of_friends = friend.get_friends(user_id)
+    
+    all_posts = []
+    for fr_id in list_of_friends:
+        all_posts.append( post.get_post_from_user(fr_id))
+    
+    return jsonify ({
+        "posts": all_posts
+    })
 
 # Watchlist
 @app.route("/watchlist/toggle_add", methods = ["POST"])

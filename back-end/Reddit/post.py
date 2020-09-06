@@ -24,16 +24,19 @@ class Post(db.Model):
             "image_url": self.image_url
         }
 
-def create_post(user_id, title, content):
+def create_post(user_id, title, content, image_url):
     app.logger.info(f" Creating new post from {user_id}")
 
     is_successful_create = False
-
+    
     try:
+
         new_post = Post(title = title, 
-                user_id = user_id, content = content)
+                user_id = user_id, content = content,
+                image_url = image_url)
         db.session.add(new_post)
         db.session.commit()
+        db.session.close()
 
         app.logger.info(f" SUCCESS: new post created")
         is_successful_create = True

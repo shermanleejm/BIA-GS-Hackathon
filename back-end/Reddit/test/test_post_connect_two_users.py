@@ -4,8 +4,8 @@ import json
 url = "http://13.229.107.243:5001/friend/connect"
 
 data = {
-    "sender_id": "Heather",
-    "receiver_id": "Edwin" 
+    "sender_id": "Jill",
+    "receiver_id": "James" 
 }
 
 response = requests.post(url, data = json.dumps(data))

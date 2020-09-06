@@ -27,6 +27,7 @@ def toggle_like(post_id, user_id):
         app.logger.info(f" SUCCESS: {user_id} no longer likes {post_id}")
         
     db.session.commit()
+    db.session.close()
     return {
         "is_success": True
     }
