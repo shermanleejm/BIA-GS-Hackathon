@@ -72,7 +72,9 @@ export const testData = [
   },
 ];
 
+export const loremIpsum =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget ornare mauris. Donec tempus diam ut mauris eleifend congue. Nullam quis velit non tortor eleifend lacinia a quis sapien. In rhoncus ultricies scelerisque. Maecenas dignissim velit sed nisl posuere, vel pulvinar nibh varius. Etiam enim turpis, molestie consequat mi sed, dapibus vulputate tortor. Cras sit amet gravida est. Duis at tellus iaculis, pharetra lectus eu, finibus elit. Nullam consequat rhoncus nunc, at sagittis felis interdum varius. Nam ac ipsum aliquet nisi ullamcorper ultrices in vel eros. Nulla varius justo justo, eu tristique nunc bibendum sit amet. Mauris lobortis tempus ante a sollicitudin. Proin quam dui, sagittis at orci ut, semper finibus orci. Maecenas purus felis, aliquam et ultrices nec, ultrices sed lorem. \n\nAliquam a nisi velit. Ut eget vestibulum mi. Curabitur tincidunt placerat purus. Quisque ultrices scelerisque mi, quis vehicula turpis accumsan non. In ullamcorper urna et justo imperdiet congue. Aenean vestibulum elit eu neque euismod, at consectetur ligula scelerisque. Sed pretium eget odio et condimentum. \n\nSuspendisse elementum elit ut augue interdum lobortis. Sed auctor tortor metus. Aliquam erat volutpat. Suspendisse placerat malesuada volutpat. Etiam pharetra sagittis magna eget dignissim. Fusce eu iaculis odio. Etiam vel nisi a neque tincidunt rhoncus sed at lorem.";
 
 export default {
-  testData
-}
+  testData, loremIpsum
+};

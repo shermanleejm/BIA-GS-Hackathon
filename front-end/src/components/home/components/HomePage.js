@@ -15,20 +15,23 @@ import {
   ThemeProvider,
   createMuiTheme,
   CssBaseline,
+  IconButton,
 } from "@material-ui/core";
 import { Skeleton, Autocomplete } from "@material-ui/lab";
 import fininstruments from "./FinancialInstruments";
 import edupost from "../../education/components/EducationPosts";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import AddIcon from "@material-ui/icons/Add";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ResponsiveLine } from "@nivo/line";
+import TempData from "./TempData";
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
-    var filterOptions = ["Recommended", "Watch List", "Friends"];
+    var filterOptions = ["Recommended", "Friends", "Watch List"];
 
     var finData = fininstruments.fininstruments;
     var top4 = finData.slice(0, 4);
@@ -38,7 +41,7 @@ class HomePage extends Component {
     edupost.postData.map((row) => {
       tempArr = {
         title: row.title,
-        category: filterOptions[Math.floor(Math.random() * 1)],
+        category: filterOptions[Math.floor(Math.random() * 2)],
         shortDescription: row.shortDescription,
         img: row.img,
         url: row.link,
@@ -51,7 +54,7 @@ class HomePage extends Component {
       isLoaded: false,
       top4: top4,
       filterOptions: filterOptions,
-      chosenFilter: [filterOptions[1]],
+      chosenFilter: [filterOptions[0]],
       postData: postData,
       showModal: false,
       modalToShow: 0,
@@ -60,6 +63,15 @@ class HomePage extends Component {
       postContent: "",
       watchList: ["AAPL", "AMZN", "BRK-B", "TSLA", "FB"],
       watchListTicks: [],
+      showPost: false,
+      scrollPos: 0,
+      commentValue: "",
+      postToShow: {
+        title: "Placeholder Title",
+        shortDescription: "This is the post content",
+        likes: 69,
+        comments: [],
+      },
     };
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -120,9 +132,37 @@ class HomePage extends Component {
             return (
               <Grid item>
                 <Card
-                  style={{ width: "80vw", backgroundColor: "#ffffff" }}
+                  style={{
+                    width: "80vw",
+                    backgroundColor: "#ffffff",
+                    marginBottom: "20px",
+                    cursor: "pointer",
+                  }}
                   onClick={() => {
-                    window.open(post.url, "_blank");
+                    // window.open(post.url, "_blank");
+                    this.setState({
+                      showPost: true,
+                      scrollPos: window.pageYOffset,
+                      postToShow: {
+                        title: post.title,
+                        shortDescription: post.shortDescription,
+                        likes: post.likes,
+                        comments: [
+                          {
+                            commenter: "Greg Lippmann",
+                            comment: "This is a great post! Please post more",
+                          },
+                          {
+                            commenter: "Michael Burry",
+                            comment: "Loved this article keep up the good work",
+                          },
+                          {
+                            commenter: "Steve Eisman",
+                            comment: "Terrible, please delete this now",
+                          },
+                        ],
+                      },
+                    });
                   }}
                   elevation={3}
                 >
@@ -173,7 +213,11 @@ class HomePage extends Component {
                           />
                         ) : (
                           <div>
-                            <Skeleton variant="rect" height="128" width="128" />
+                            <Skeleton
+                              variant="rect"
+                              height="128px"
+                              width="128px"
+                            />
                           </div>
                         )}
                       </Grid>
@@ -207,6 +251,7 @@ class HomePage extends Component {
             stacked: true,
             reverse: false,
           }}
+          enableGridX={false}
           axisTop={null}
           axisRight={null}
           axisBottom={null}
@@ -267,8 +312,262 @@ class HomePage extends Component {
     );
   }
 
+  postModal() {
+    var post = this.state.postToShow;
+
+    return (
+      <div>
+        <Modal
+          open={this.state.showPost}
+          onClick={() => {
+            this.setState({ showPost: false });
+          }}
+        >
+          <div
+            style={{
+              position: "fixed",
+              outline: 0,
+              top: "10%",
+              left: "50%",
+              transform: "translate(-50%, -10%)",
+              backgroundColor: "#ffffff",
+              margin: "auto",
+            }}
+          >
+            <Paper style={{ width: "80vw", padding: "20px" }}>
+              <Grid container spacing={3}>
+                <Grid item>
+                  <Typography variant="h2">{post.title}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">{post.shortDescription}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">{TempData.loremIpsum}</Typography>
+                </Grid>
+              </Grid>
+            </Paper>
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+
+  postFullPage() {
+    var post = this.state.postToShow;
+    window.scroll(0, 0);
+
+    return (
+      <div>
+        <IconButton
+          onClick={() => {
+            window.scroll(0, this.state.scrollPos)
+            this.setState({ showPost: false });
+          }}
+          style={{ position: "fixed" }}
+        >
+          <ArrowBackIcon style={{ height: "8vw", width: "8vw" }} />
+        </IconButton>
+        <div style={{ width: "80vw", margin: "auto" }}>
+          <Paper style={{ width: "80vw", padding: "2vw" }}>
+            <Grid container spacing={3}>
+              <Grid item>
+                <Typography variant="h3">{post.title}</Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="h6">{post.shortDescription}</Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1">{TempData.loremIpsum}</Typography>
+              </Grid>
+              <Grid item>
+                <TextField
+                  value={this.state.commentValue}
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  style={{ width: "76vw" }}
+                  placeholder="Add your comments here"
+                  label="Comment"
+                  onChange={(event) => {
+                    this.setState({ commentValue: event.target.value });
+                  }}
+                />
+                <Button
+                  onClick={() => {
+                    this.setState({ commentValue: "" });
+                  }}
+                >
+                  Submit
+                </Button>
+              </Grid>
+              {post.comments.map((c) => (
+                <Grid item>
+                  <Card style={{ width: "76vw" }}>
+                    <strong>{c.commenter}</strong>
+                    <Typography variant="body2">{c.comment}</Typography>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Paper>
+        </div>
+      </div>
+    );
+  }
+
+  defaultView() {
+    return (
+      <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="center"
+        spacing={3}
+        style={{ maxWidth: "80vw", margin: "auto" }}
+      >
+        {window.innerWidth > 900 && (
+          <div>
+            <Typography
+              variant="h6"
+              style={{
+                textAlign: "left",
+                width: "78vw",
+                margin: "auto",
+                paddingTop: "10px",
+              }}
+            >
+              Recommended financial products to focus on based on your risk
+              profile:
+            </Typography>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="stretch"
+              spacing={2}
+            >
+              {Object.keys(this.state.top4).map((key) => {
+                return (
+                  <Grid item md={3} xs={12} lg={3}>
+                    <Paper
+                      style={{
+                        height: "100%",
+                        textAlign: "left",
+                        padding: "20px",
+                        backgroundColor: "#ffffff",
+                      }}
+                      elevation={2}
+                    >
+                      <Grid
+                        container
+                        direction="column"
+                        justify="space-between"
+                        alignItems="flex-start"
+                        style={{ height: "100%" }}
+                      >
+                        {this.state.isLoaded ? (
+                          <div>
+                            <Grid item>
+                              <Typography variant="h6">
+                                {this.state.top4[key]["title"]}
+                              </Typography>
+                            </Grid>
+
+                            <Grid item>
+                              {this.state.top4[key]["shortDescription"].length >
+                              100 ? (
+                                <span>
+                                  <Typography variant="body2">
+                                    {this.state.top4[key][
+                                      "shortDescription"
+                                    ].slice(0, 93)}
+                                    <strong> more...</strong>
+                                  </Typography>
+                                </span>
+                              ) : (
+                                <Typography variant="body2">
+                                  {this.state.top4[key]["shortDescription"]}
+                                </Typography>
+                              )}
+                            </Grid>
+                          </div>
+                        ) : (
+                          <div>
+                            <Skeleton variant="text" />
+                          </div>
+                        )}
+
+                        <Grid item>
+                          {this.state.isLoaded ? (
+                            <Button
+                              onClick={() => {
+                                this.setState({
+                                  showModal: true,
+                                  modalToShow: key,
+                                });
+                              }}
+                            >
+                              learn more
+                            </Button>
+                          ) : (
+                            <Skeleton variant="rect" width="100" height="50" />
+                          )}
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </div>
+        )}
+
+        <Grid
+          item
+          style={{
+            width: "79vw",
+            paddingBottom: "30px",
+            paddingTop: "20px",
+          }}
+        >
+          <Autocomplete
+            multiple
+            options={this.state.filterOptions}
+            defaultValue={this.state.chosenFilter}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Filter Posts"
+                // placeholder="Favorites"
+              />
+            )}
+            onChange={(event, newValue) => {
+              this.setState({
+                chosenFilter: newValue,
+              });
+            }}
+          />
+        </Grid>
+
+        <Grid item>
+          <Grid container column justify="space-between" alignItems="center">
+            {this.state.isLoaded &&
+              this.state.chosenFilter.includes("Recommended") &&
+              this.showRecommendedPosts()}
+
+            {this.state.isLoaded &&
+              this.state.chosenFilter.includes("Friends") &&
+              this.showRecommendedPosts()}
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  }
+
   render() {
-    console.log(this.state.chosenFilter);
+    console.log(this.state.showPost);
     var theme = createMuiTheme({
       palette: {
         primary: {
@@ -454,161 +753,7 @@ class HomePage extends Component {
             </Modal>
           )}
 
-          <Grid
-            container
-            direction="column"
-            justify="flex-start"
-            alignItems="center"
-            spacing={3}
-            style={{ maxWidth: "80vw", margin: "auto" }}
-          >
-            {window.innerWidth > 900 && (
-              <div>
-                <Typography
-                  variant="h6"
-                  style={{
-                    textAlign: "left",
-                    width: "78vw",
-                    margin: "auto",
-                    paddingTop: "10px",
-                  }}
-                >
-                  Recommended financial products to focus on based on your risk
-                  profile:
-                </Typography>
-                <Grid
-                  container
-                  direction="row"
-                  justify="center"
-                  alignItems="stretch"
-                  spacing={2}
-                >
-                  {Object.keys(this.state.top4).map((key) => {
-                    return (
-                      <Grid item md={3} xs={12} lg={3}>
-                        <Paper
-                          style={{
-                            height: "100%",
-                            textAlign: "left",
-                            padding: "20px",
-                            backgroundColor: "#ffffff",
-                          }}
-                          elevation={2}
-                        >
-                          <Grid
-                            container
-                            direction="column"
-                            justify="space-between"
-                            alignItems="flex-start"
-                            style={{ height: "100%" }}
-                          >
-                            {this.state.isLoaded ? (
-                              <div>
-                                <Grid item>
-                                  <Typography variant="h6">
-                                    {this.state.top4[key]["title"]}
-                                  </Typography>
-                                </Grid>
-
-                                <Grid item>
-                                  {this.state.top4[key]["shortDescription"]
-                                    .length > 100 ? (
-                                    <span>
-                                      <Typography variant="body2">
-                                        {this.state.top4[key][
-                                          "shortDescription"
-                                        ].slice(0, 93)}
-                                        <strong> more...</strong>
-                                      </Typography>
-                                    </span>
-                                  ) : (
-                                    <Typography variant="body2">
-                                      {this.state.top4[key]["shortDescription"]}
-                                    </Typography>
-                                  )}
-                                </Grid>
-                              </div>
-                            ) : (
-                              <div>
-                                <Skeleton variant="text" />
-                              </div>
-                            )}
-
-                            <Grid item>
-                              {this.state.isLoaded ? (
-                                <Button
-                                  onClick={() => {
-                                    this.setState({
-                                      showModal: true,
-                                      modalToShow: key,
-                                    });
-                                  }}
-                                >
-                                  learn more
-                                </Button>
-                              ) : (
-                                <Skeleton
-                                  variant="rect"
-                                  width="100"
-                                  height="50"
-                                />
-                              )}
-                            </Grid>
-                          </Grid>
-                        </Paper>
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              </div>
-            )}
-
-            <Grid
-              item
-              style={{
-                width: "79vw",
-                paddingBottom: "30px",
-                paddingTop: "20px",
-              }}
-            >
-              <Autocomplete
-                multiple
-                options={this.state.filterOptions}
-                defaultValue={this.state.chosenFilter}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Filter Posts"
-                    // placeholder="Favorites"
-                  />
-                )}
-                onChange={(event, newValue) => {
-                  this.setState({
-                    chosenFilter: newValue,
-                  });
-                }}
-              />
-            </Grid>
-
-            <Grid item>
-              <Grid
-                container
-                column
-                justify="space-between"
-                alignItems="center"
-                spacing={3}
-              >
-                {this.state.isLoaded &&
-                  this.state.chosenFilter.includes("Watch List") &&
-                  this.showWatchList()}
-
-                {this.state.isLoaded &&
-                  this.state.chosenFilter.includes("Recommended") &&
-                  this.showRecommendedPosts()}
-              </Grid>
-            </Grid>
-          </Grid>
+          {this.state.showPost ? this.postFullPage() : this.defaultView()}
         </div>
       </ThemeProvider>
     );
