@@ -8,7 +8,7 @@ import RiskProfileContainer from '../../riskProfile/containers/RiskProfileContai
 import LoadingOverlay from 'react-loading-overlay';
 import axios from 'axios';
 import { Paper } from "@material-ui/core";
-
+import Cookies from 'js-cookie';
 
 const QuestionContainer = () => {
     const [currentQuestion, setQuestion] = useState(0);
@@ -35,17 +35,17 @@ const QuestionContainer = () => {
     const handleGenerate = () => {
         setActive(true);
         const data = {
+            user_id: Cookies.get('userid'),
             age: age,
             occupation: occupation,
             spending: spending,
             risk: risk
         }
-        axios.put("http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/", data).then((res) => {
+        axios.put("http://" + process.env.REACT_APP_PUBLIC_IP + ":5001/login/profiling", data).then((res) => {
             setActive(false);
             setPortfolioSent(true);
         }).catch((err) => {
-            // TODO: CHANGE VALUE TO FALSE WHEN DEPLOYING
-            setPortfolioSent(true);
+            setPortfolioSent(false);
         })
     }
 

@@ -14,9 +14,22 @@ import MCQGame from "../game/components/MCQGame";
 function App() {
   const [isAuthenticated, setAuthenticated] = useState();
   const [isFirstTimeUser, setFirstTimeUser] = useState(true);
+  const [suggestedFriends, setSuggestedFriends] = useState();
+  const [friends, setFriends] = useState();
 
   useEffect(() => {
     setAuthenticated(Cookies.get("authenticated"));
+    const userid = Cookies.get('userid');
+    axios.get(
+        "http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getstrangers/${userid}`
+    ).then(res => {
+        setSuggestedFriends(res.data.slice(0,3));
+    })
+
+    axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getuserinfo/${userid}`).then(res => {
+      console.log(res);
+      setFriends(res.data.friend_id_list);
+    })
   }, []);
 
   useEffect(() => {
@@ -28,7 +41,7 @@ function App() {
         .get(
           "http://" +
             process.env.REACT_APP_PUBLIC_IP +
-            ":5000/login/checkfirstlogin",
+            ":5001/login/checkfirstlogin",
           { params: data }
         )
         .then((res) => {
@@ -59,7 +72,7 @@ function App() {
       case 1:
         return <EducationPage />;
       case 2:
-        return <FriendsPage />;
+        return <FriendsPage suggestedFriends={suggestedFriends} friends={friends}/>;
       case 3:
         return <MCQGame />;
     }

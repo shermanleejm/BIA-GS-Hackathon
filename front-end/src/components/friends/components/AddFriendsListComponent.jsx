@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import AddFriendInfoComponent from './AddFriendInfoComponent';
+import { Row } from 'react-bootstrap';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+const AddFriendsListComponent = (props) => {
+    const suggestedFriends = props.suggestedFriends;
 
-const AddFriendsListComponent = () => {
-    // const [suggestedFriends, setSuggestedFriends] = useState();
-    const suggestedFriends = [
-        {name: 'john', occupation: 'doctor', risk: 'high'}, {name:'jill', occupation: 'doctor', risk: 'high'}, {name: 'jack', occupation: 'doctor', risk: 'high'}
-    ]
+    const handleUserSelect = (userid) => {
+        props.handleUserSelect(userid);
+    }
     // useEffect(() => {
     //     const userid = Cookies.get('userid')
     //     axios.get(
-    //         "http://" + process.env.REACT_APP_PUBLIC_IP + ":5000/user/{userid}/getSuggestedFriends"
+    //         "http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getstrangers/${userid}`
     //     ).then(res => {
-    //         setSuggestedFriends(res.data.friends.slice(0,3));
+    //         setSuggestedFriends(res.data.slice(0,3));
     //     })
-    // })
+    // },[])
+    const addNewFriend = (friendData) => {
+        props.addNewFriend(friendData);
+    }
 
     return (
         <>
             <h2 className='font-italic pb-2'>Suggested Friends</h2>
-            {suggestedFriends.map((friend, index) => {
-                return <AddFriendInfoComponent friend={friend} index={index}/>
-            })}
+
+            { suggestedFriends ? suggestedFriends.map((friend, index) => {
+                return <AddFriendInfoComponent key={friend.user_id} friend={friend} index={index} handleUserSelect={handleUserSelect} addNewFriend={addNewFriend}/>
+            }) : <></>}
         </>
     )
 }

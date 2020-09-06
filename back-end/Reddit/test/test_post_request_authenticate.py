@@ -1,8 +1,8 @@
 import requests
 import json
 
-# url = "http://13.229.107.243:5001/login/authenticate"
-url = "http://localhost:5000/login/authenticate"
+url = "http://13.229.107.243:5001/login/authenticate"
+# url = "http://localhost:5000/login/authenticate"
 
 data = {
     "user_id": "Bob",

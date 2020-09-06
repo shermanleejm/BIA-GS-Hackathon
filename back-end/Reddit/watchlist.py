@@ -2,22 +2,23 @@ from app import app, db
 
 class Watchlist(db.Model):
 
-    user_id = db.Column(db.String(), primary_key = True)
-    product = db.Column(db.String(), primary_key = True)
+    w_id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.String())
+    product = db.Column(db.String())
 
     def __init__(self, user_id, product):        
         
         self.user_id = user_id
         self.product = product
 
-def toggle_add_to_watchlist( user_id, product):
+def toggle_add_to_watchlist(user_id, product):
 
     app.logger.info(f" Toggling watchlist status for {product} by {user_id}")
 
     current_status = Watchlist.query.filter_by(user_id = user_id, product = product).first()
 
     if current_status is None:
-        item_to_add = Watchlist(user_id, product)
+        item_to_add = Watchlist(user_id = user_id, product = product)
         db.session.add(item_to_add)
 
         app.logger.info(f" SUCCESS: {user_id} has added {product} to the watchlist")
