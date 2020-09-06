@@ -91,7 +91,7 @@ class MCQGame extends Component {
             Welcome! Are you ready to start your game?
           </Typography>
           <Grid container row>
-            <Grid item md={6}>
+            <Grid item md={6} xs={6}>
               <Button
                 onClick={() => {
                   this.setState({ questionNum: 0 });
@@ -101,7 +101,7 @@ class MCQGame extends Component {
                 Yes I am!
               </Button>
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} xs={6}>
               <Button
                 onClick={() => {
                   this.setState({ questionNum: -1, showGame: false });
@@ -136,7 +136,7 @@ class MCQGame extends Component {
           <Grid container column>
             {answers.map((ans, index) => {
               return (
-                <Grid item md={12}>
+                <Grid item md={12} xs={12}>
                   <Button
                     style={{ textTransform: "none" }}
                     fullWidth

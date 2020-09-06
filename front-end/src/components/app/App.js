@@ -47,7 +47,7 @@ function App() {
     window.location.reload();
   };
 
-  const [pageToShow, setPageToShow] = useState(3);
+  const [pageToShow, setPageToShow] = useState(0);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };

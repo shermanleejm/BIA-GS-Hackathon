@@ -57,26 +57,48 @@ class HomePage extends Component {
       showNewPost: false,
       postTitle: "",
       postContent: "",
+      watchList: ["AAPL", "AMZN", "BRK-B", "TSLA", "FB"],
+      watchListTicks: [],
     };
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
-    // console.log(localStorage.getItem("termsDownloaded"));
-    // localStorage.getItem("termsDownloaded") === null &&
-    //   fetch("http://" + process.env.REACT_APP_PUBLIC_IP + ":8000/terms")
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       data.map((item) => {
+    // if (localStorage.getItem("skipReload") === null) {
+    //   window.location.reload();
+    // }
+    // localStorage.setItem("skipReload", "true");
 
-    //       });
-    //       localStorage.setItem("termsDownloaded", "true");
-    //     });
-    if (localStorage.getItem("skipReload") === null) {
-      window.location.reload();
-    }
-    localStorage.setItem("skipReload", "true");
+    fetch(process.env.REACT_APP_ZEXEL_IP + "watchlist/getall/Calvin")
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ watchList: data });
+
+        // var urls = [];
+        // data.map((stock) => {
+        //   urls.push(
+        //     fetch(process.env.REACT_APP_KELVIN_IP + "stock_price/" + stock)
+        //   );
+        // });
+
+        // return Promise.all(urls)
+        //   .then(function (responses) {
+        //     return Promise.all(
+        //       responses.map(function (response) {
+        //         return response.json();
+        //       })
+        //     );
+        //   })
+        //   .then(function (data) {
+        //     console.log(data);
+        //     this.setState({ watchListTicks: data });
+        //   })
+          // .catch(function (error) {
+          //   console.log(error);
+          // });
+      });
+
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
   }
@@ -90,6 +112,8 @@ class HomePage extends Component {
   }
 
   render() {
+
+    console.log(this.state.watchListTicks)
     var theme = createMuiTheme({
       palette: {
         primary: {
