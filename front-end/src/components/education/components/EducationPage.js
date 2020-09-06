@@ -21,7 +21,7 @@ import stonks from "./stonks.jpg";
 class EducationPage extends Component {
   constructor(props) {
     super(props);
-    var categories = ["Investing", "Personal Finance", "Basics", "News"];
+    var categories = ["Basics", "Personal Finance", "Investing", "News"];
 
     this.state = {
       categories: categories,
@@ -29,7 +29,7 @@ class EducationPage extends Component {
       prevTopic: categories[0],
       topic: categories[0],
       searching: false,
-      searchValue: "", 
+      searchValue: "",
     };
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -176,12 +176,11 @@ class EducationPage extends Component {
             );
           })}
 
-          {window.innerWidth > 800 && this.searchBar()}
+          {window.innerWidth > 1000 && this.searchBar()}
         </div>
-
-        {window.innerWidth < 800 && this.searchBar()}
-
-        <Paper elevation={3} style={{ padding: "20px" }}>
+        {/* 
+        <div>{window.innerWidth <= 1000 && this.searchBar()}</div> */}
+        <Paper elevation={3} style={{ padding: "10px" }}>
           <Grid
             container
             direction="row"
