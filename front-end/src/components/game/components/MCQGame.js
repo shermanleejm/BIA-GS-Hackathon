@@ -168,7 +168,7 @@ class MCQGame extends Component {
       // TODO: update backend
       var newPlayerData = this.state.playerData;
       newPlayerData[this.state.gameToShow] = (this.state.numCorrect / 5) * 100;
-      this.setState({ questionNum: -1, showGame: false});
+      this.setState({ questionNum: -1, showGame: false });
     }
   };
 
@@ -177,6 +177,9 @@ class MCQGame extends Component {
       <Modal
         open={this.state.showCongratulationsModal}
         onClose={() => {
+          var score = (this.state.numCorrect / 5) * 100;
+          console.log(this.state.gameToShow);
+          localStorage.setItem(this.state.gameToShow, JSON.stringify(score));
           this.setState({
             showCongratulationsModal: false,
             questionNum: -1,

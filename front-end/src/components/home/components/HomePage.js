@@ -23,6 +23,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import AddIcon from "@material-ui/icons/Add";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { ResponsiveLine } from "@nivo/line";
 
 class HomePage extends Component {
   constructor(props) {
@@ -47,10 +48,10 @@ class HomePage extends Component {
     });
 
     this.state = {
-      isLoaded: true,
+      isLoaded: false,
       top4: top4,
       filterOptions: filterOptions,
-      chosenFilter: [filterOptions[0]],
+      chosenFilter: [filterOptions[1]],
       postData: postData,
       showModal: false,
       modalToShow: 0,
@@ -65,38 +66,38 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    // if (localStorage.getItem("skipReload") === null) {
-    //   window.location.reload();
-    // }
-    // localStorage.setItem("skipReload", "true");
+    if (localStorage.getItem("skipReload") === null) {
+      window.location.reload();
+    }
+    localStorage.setItem("skipReload", "true");
 
     fetch(process.env.REACT_APP_ZEXEL_IP + "watchlist/getall/Calvin")
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ watchList: data });
+        if (data.length > this.state.watchList) {
+          this.setState({ watchList: data });
+        }
+      });
 
-        // var urls = [];
-        // data.map((stock) => {
-        //   urls.push(
-        //     fetch(process.env.REACT_APP_KELVIN_IP + "stock_price/" + stock)
-        //   );
-        // });
+    var urls = [];
+    this.state.watchList.map((stock) => {
+      urls.push(
+        fetch(process.env.REACT_APP_KELVIN_IP + "stock_price/" + stock)
+      );
+    });
 
-        // return Promise.all(urls)
-        //   .then(function (responses) {
-        //     return Promise.all(
-        //       responses.map(function (response) {
-        //         return response.json();
-        //       })
-        //     );
-        //   })
-        //   .then(function (data) {
-        //     console.log(data);
-        //     this.setState({ watchListTicks: data });
-        //   })
-          // .catch(function (error) {
-          //   console.log(error);
-          // });
+    Promise.all(urls)
+      .then((allResponses) => Promise.all(allResponses.map((r) => r.text())))
+      .then((json) => {
+        var watchListTicks = [];
+        json.map((row) => {
+          watchListTicks.push(JSON.parse(row));
+        });
+
+        this.setState({
+          watchListTicks: watchListTicks,
+          isLoaded: true,
+        });
       });
 
     this.updateWindowDimensions();
@@ -111,9 +112,163 @@ class HomePage extends Component {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
-  render() {
+  showRecommendedPosts() {
+    return (
+      <div>
+        {this.state.postData.map((post) => {
+          if (this.state.chosenFilter.includes(post.category)) {
+            return (
+              <Grid item>
+                <Card
+                  style={{ width: "80vw", backgroundColor: "#ffffff" }}
+                  onClick={() => {
+                    window.open(post.url, "_blank");
+                  }}
+                  elevation={3}
+                >
+                  <Grid
+                    container
+                    row
+                    justify="space-between"
+                    alignItems="center"
+                    style={{ padding: "10px" }}
+                  >
+                    <Grid item alignItems="flex-start" xs={12} md={8} lg={10}>
+                      {this.state.isLoaded ? (
+                        <CardContent>
+                          <Typography variant="h5">{post.title}</Typography>
+                          <Typography variant="body2">
+                            {post.shortDescription}
+                          </Typography>
 
-    console.log(this.state.watchListTicks)
+                          <Grid
+                            container
+                            direction="row"
+                            justify="flex-start"
+                            alignItems="center"
+                            spacing={3}
+                            style={{ paddingTop: "10px" }}
+                          >
+                            <Grid item>
+                              <ThumbUpIcon />
+                            </Grid>
+                            <Grid item>{post.likes}</Grid>
+                          </Grid>
+                        </CardContent>
+                      ) : (
+                        <div style={{ width: "100%", paddingLeft: "10%" }}>
+                          <Skeleton variant="text" />
+                          <Skeleton variant="text" />
+                          <Skeleton variant="text" />
+                        </div>
+                      )}
+                    </Grid>
+
+                    {window.innerWidth > 1000 && (
+                      <Grid item xs={4} md={3} lg={2}>
+                        {this.state.isLoaded ? (
+                          <img
+                            src={post.img}
+                            style={{ height: "128px", width: "128px" }}
+                          />
+                        ) : (
+                          <div>
+                            <Skeleton variant="rect" height="128" width="128" />
+                          </div>
+                        )}
+                      </Grid>
+                    )}
+                  </Grid>
+                </Card>
+              </Grid>
+            );
+          }
+        })}
+      </div>
+    );
+  }
+
+  makeLineChart(data) {
+    return (
+      <div
+        style={{
+          height: "500px",
+          width: window.innerWidth > 800 ? "80vw" : "90vw",
+        }}
+      >
+        <ResponsiveLine
+          data={data}
+          margin={{ top: 0, right: 50, bottom: 50, left: 60 }}
+          xScale={{ type: "point" }}
+          yScale={{
+            type: "linear",
+            min: "auto",
+            max: "auto",
+            stacked: true,
+            reverse: false,
+          }}
+          axisTop={null}
+          axisRight={null}
+          axisBottom={null}
+          // axisBottom={{
+          //   orient: "bottom",
+          //   tickSize: 5,
+          //   tickPadding: 5,
+          //   tickRotation: 0,
+          //   legend: "Date",
+          //   legendOffset: 36,
+          //   legendPosition: "middle",
+          // }}
+          axisLeft={{
+            orient: "left",
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "closing price",
+            legendOffset: -50,
+            legendPosition: "middle",
+          }}
+          colors={{ scheme: "nivo" }}
+          pointSize={10}
+          pointColor={{ theme: "background" }}
+          pointBorderWidth={2}
+          pointBorderColor={{ from: "serieColor" }}
+          pointLabel="y"
+          pointLabelYOffset={-12}
+          useMesh={true}
+        />
+      </div>
+    );
+  }
+
+  showWatchList() {
+    return (
+      <div>
+        {this.state.watchListTicks.map((stockTicks, index) => {
+          var stockName = this.state.watchList[index];
+          return (
+            <Grid item style={{ textAlign: "center" }}>
+              <Typography variant="h6">{stockName}</Typography>
+              <Typography variant="body1">
+                From {stockTicks[0]["x"]} to{" "}
+                {stockTicks[stockTicks.length - 1]["x"]}
+              </Typography>
+              {this.makeLineChart([
+                {
+                  id: stockName,
+                  color: "hsl(318, 70%, 50%)",
+                  data: stockTicks,
+                },
+              ])}
+            </Grid>
+          );
+        })}
+      </div>
+    );
+  }
+
+  render() {
+    console.log(this.state.chosenFilter);
     var theme = createMuiTheme({
       palette: {
         primary: {
@@ -435,91 +590,22 @@ class HomePage extends Component {
                 }}
               />
             </Grid>
+
             <Grid item>
-              <Grid container column spacing={3}>
-                {this.state.postData.map((post) => {
-                  if (this.state.chosenFilter.includes(post.category)) {
-                    return (
-                      <Grid item>
-                        <Card
-                          style={{ width: "80vw", backgroundColor: "#ffffff" }}
-                          onClick={() => {
-                            window.open(post.url, "_blank");
-                          }}
-                          elevation={3}
-                        >
-                          <Grid
-                            container
-                            row
-                            justify="space-between"
-                            alignItems="center"
-                            style={{ padding: "10px" }}
-                          >
-                            <Grid
-                              item
-                              alignItems="flex-start"
-                              xs={12}
-                              md={8}
-                              lg={10}
-                            >
-                              {this.state.isLoaded ? (
-                                <CardContent>
-                                  <Typography variant="h5">
-                                    {post.title}
-                                  </Typography>
-                                  <Typography variant="body2">
-                                    {post.shortDescription}
-                                  </Typography>
+              <Grid
+                container
+                column
+                justify="space-between"
+                alignItems="center"
+                spacing={3}
+              >
+                {this.state.isLoaded &&
+                  this.state.chosenFilter.includes("Watch List") &&
+                  this.showWatchList()}
 
-                                  <Grid
-                                    container
-                                    direction="row"
-                                    justify="flex-start"
-                                    alignItems="center"
-                                    spacing={3}
-                                    style={{ paddingTop: "10px" }}
-                                  >
-                                    <Grid item>
-                                      <ThumbUpIcon />
-                                    </Grid>
-                                    <Grid item>{post.likes}</Grid>
-                                  </Grid>
-                                </CardContent>
-                              ) : (
-                                <div
-                                  style={{ width: "100%", paddingLeft: "10%" }}
-                                >
-                                  <Skeleton variant="text" />
-                                  <Skeleton variant="text" />
-                                  <Skeleton variant="text" />
-                                </div>
-                              )}
-                            </Grid>
-
-                            {window.innerWidth > 1000 && (
-                              <Grid item xs={4} md={3} lg={2}>
-                                {this.state.isLoaded ? (
-                                  <img
-                                    src={post.img}
-                                    style={{ height: "128px", width: "128px" }}
-                                  />
-                                ) : (
-                                  <div>
-                                    <Skeleton
-                                      variant="rect"
-                                      height="128"
-                                      width="128"
-                                    />
-                                  </div>
-                                )}
-                              </Grid>
-                            )}
-                          </Grid>
-                        </Card>
-                      </Grid>
-                    );
-                  }
-                })}
+                {this.state.isLoaded &&
+                  this.state.chosenFilter.includes("Recommended") &&
+                  this.showRecommendedPosts()}
               </Grid>
             </Grid>
           </Grid>

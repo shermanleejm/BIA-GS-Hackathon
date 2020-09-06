@@ -56,7 +56,7 @@ class AppHeader extends Component {
               <Tab icon={<SchoolIcon />} label="Learn" />
               <Tab icon={<PeopleIcon />} label="Friends" />
               <Tab icon={<SportsEsportsIcon />} label="Game" />
-              <Tab icon={<AccountCircleIcon />} label="User" />
+              {/* <Tab icon={<AccountCircleIcon />} label="User" /> */}
             </Tabs>
           </Paper>
         </div>
