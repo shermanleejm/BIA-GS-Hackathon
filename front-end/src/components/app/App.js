@@ -34,15 +34,12 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const data = {
-        userid: Cookies.get("userid"),
-      };
+      const userid = Cookies.get("userid");
       axios
         .get(
           "http://" +
             process.env.REACT_APP_PUBLIC_IP +
-            ":5001/login/checkfirstlogin",
-          { params: data }
+            ":5001/login/checkfirstlogin/"+userid
         )
         .then((res) => {
           if (res.data.is_first_login) {
