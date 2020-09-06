@@ -9,19 +9,38 @@ import Cookies from 'js-cookie';
 const FriendsPage = (props) => {
     const [userData, setUserData] = useState([]);
     const [friends, setFriends] = useState();
+    const [suggestedFriends, setSuggestedFriends] = useState();
 
-    useEffect(()=> {
-        setFriends(props.friends);
-        console.log(props.friends)
-    }, [props.friends])
-
+    console.log(props);
     const handleClick = (data) => {
         setUserData(data);
     }
 
-    const addNewFriend = (friendData) => {
-        setFriends(friends.push(friendData.info.user_id));
-        setUserData(userData.push(friendData))
+    useEffect(() => {
+        if (props.friends) {
+            setFriends(props.friends)
+        }
+        if (props.suggestedFriends) {
+            setSuggestedFriends(props.suggestedFriends)
+        }
+    })
+
+
+    const handleAddFriend = (friendId) => {
+        const data = {
+            sender_id: Cookies.get('userid'),
+            receiver_id: friendId
+        }
+
+        axios.post("http://" + process.env.REACT_APP_PUBLIC_IP + ":5001/friend/connect", data).then(res =>{
+            // get new friends
+            axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getfriends/${Cookies.get('userid')}`).then(res => {
+                setFriends(res.data);
+              })
+            axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getstrangers/${Cookies.get('userid')}`).then(res => {
+                setSuggestedFriends(res.data.slice(0,3));
+            })
+        })
     }
 
     return (
@@ -30,8 +49,8 @@ const FriendsPage = (props) => {
                 <Paper elevation={3} style={{minWidth: "350px"}} className={'d-flex align-content-center'}>
                     <div className='mx-auto mt-3'>
                         <input className="form-control mr-sm-2 mb-4 pr-2" type="search" placeholder="Search" aria-label="Search"/>
-                        <AddFriendsListComponent handleUserSelect={handleClick} suggestedFriends={props.suggestedFriends} addNewFriend={addNewFriend} />
-                        <FriendWatchListComponent handleUserSelect={handleClick} friends={friends}/>
+                        <AddFriendsListComponent handleUserSelect={handleClick} suggestedFriends={suggestedFriends} handleAddFriend={handleAddFriend} />
+                        <FriendWatchListComponent handleUserSelect={handleClick} friends={friends} />
                     </div>
                 </Paper>
             </div>

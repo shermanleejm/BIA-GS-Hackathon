@@ -20,15 +20,18 @@ function App() {
   useEffect(() => {
     setAuthenticated(Cookies.get("authenticated"));
     const userid = Cookies.get('userid');
+
+    // get logged in user not connected friends
     axios.get(
         "http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getstrangers/${userid}`
     ).then(res => {
         setSuggestedFriends(res.data.slice(0,3));
     })
 
-    axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getuserinfo/${userid}`).then(res => {
+    // get logged in user details
+    axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getfriends/${userid}`).then(res => {
       console.log(res);
-      setFriends(res.data.friend_id_list);
+      setFriends(res.data);
     })
   }, []);
 
@@ -44,8 +47,10 @@ function App() {
         .then((res) => {
           if (res.data.is_first_login) {
             setFirstTimeUser(true);
+            localStorage.setItem('newUser',"true")
           } else {
             setFirstTimeUser(false);
+            localStorage.setItem('newUser',"false")
           }
         });
     }
@@ -57,7 +62,7 @@ function App() {
     window.location.reload();
   };
 
-  const [pageToShow, setPageToShow] = useState(0);
+  const [pageToShow, setPageToShow] = useState(2);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
@@ -78,7 +83,8 @@ function App() {
   return (
     <div style={{ backgroundColor: "#ffffff" }}>
       {isAuthenticated ? (
-        localStorage.getItem("newUser") !== "false" ? (
+        localStorage.getItem("newUser") !== "false"
+        ? (
           <div
             className="App container mt-5"
             style={{ height: "100vh", backgroundColor: "#ffffff" }}

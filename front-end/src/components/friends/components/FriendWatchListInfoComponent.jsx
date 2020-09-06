@@ -5,28 +5,34 @@ import axios from 'axios';
 
 const FriendWatchListInfoComponent = (props) => {
 
-    const friend = props.data;
-    const userid = friend;
+    const [friendData, setFriendData] = useState();
     const [data,setData] = useState()
+
     useEffect(() => {
-        axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getuserinfo/${props.data}`).then(res => {
+        console.log("==========", props.data)
+        setFriendData(props.data)
+    }, [props])
+
+    useEffect(() => {
+        if (friendData)
+        axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getuserinfo/${friendData.user_id}`).then(res => {
             const data = res.data;
             setData(data);
-            console.log(data)
         })
-    },[])
+    },[friendData])
 
     const handleUserSelect = () => {
+        console.log(data)
         props.handleUserSelect(data);
     }
 
     return (
+        friendData ?
         <Row className={'ml-2'} style={{maxWidth:'380px'}}>
-
             <div className='mr-2 mb-n5' onClick={handleUserSelect}>
                 <img src={`/images/avatar3.jpg`} alt="..." className="img-thumbnail h-50 rounded-circle mr-n5"/>
                 <div className='float-right ml-n4 mr-2'>
-                    <span className='text-uppercase font-weight-bold d-block'>{userid}</span>
+                    <span className='text-uppercase font-weight-bold d-block'>{friendData.user_id}</span>
                     <span className='d-block'>Watchlist:</span>
                     {
                         data ?
@@ -36,7 +42,7 @@ const FriendWatchListInfoComponent = (props) => {
                     }
                 </div>
             </div>
-        </Row>
+        </Row> : <></>
     )
 }
 
