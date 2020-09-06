@@ -26,7 +26,7 @@ pip freeze > requirements.txt
 <br>
 
 ### MAC authenticate, build, push to ECR
-aws ecr get-login-password --profile GS --region ap-southeast-1 | docker login --username AWS --password-stdin 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com; docker build -t gs-hackathon .; docker tag gs-hackathon:latest 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon:latest; docker push 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon:latest
+cd back-end/service/v1/financial; aws ecr get-login-password --region ap-southeast-1 --profile GS | docker login --username AWS --password-stdin 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com; docker build -t gs-hackathon-kelvin .; docker tag gs-hackathon-kelvin:latest 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon-kelvin:latest; docker push 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon-kelvin:latest
 
 <br>
 

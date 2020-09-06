@@ -361,7 +361,7 @@ class HomePage extends Component {
       <div>
         <IconButton
           onClick={() => {
-            window.scroll(0, this.state.scrollPos)
+            window.scroll(0, this.state.scrollPos);
             this.setState({ showPost: false });
           }}
           style={{ position: "fixed" }}
@@ -560,6 +560,10 @@ class HomePage extends Component {
             {this.state.isLoaded &&
               this.state.chosenFilter.includes("Friends") &&
               this.showRecommendedPosts()}
+
+            {this.state.isLoaded &&
+              this.state.chosenFilter.includes("Watch List") &&
+              this.showWatchList()}
           </Grid>
         </Grid>
       </Grid>
