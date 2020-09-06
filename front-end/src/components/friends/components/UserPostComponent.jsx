@@ -44,28 +44,9 @@ const UserPostComponent = (props) => {
                                 <p className="card-text">{post.shortDescription}</p>
                                 <ThumbUpIcon /> <span className='ml-2'>{post.likes}</span>
                             </div>
-                            {/* <div className='float-right'>
-                                <img src='/images/avatar1.jpg' />
-                            </div> */}
+
                         </div>
                     )
-                        {/* <Grid item>
-                            <Grid container row justify="space-between" alignItems="center" style={{ padding: "10px" }}>
-                                <Grid item alignItems="flex-start" xs={12} md={8} lg={10}>
-                                    <CardContent>
-                                        <Typography variant="h5"> {post.title} </Typography>
-                                        <Typography variant="body2"> {post.shortDescription} </Typography>
-                                        <Grid container direction="row" justify="flex-start" alignItems="center" spacing={3} style={{ paddingTop: "10px" }}>
-                                            <Grid item>
-                                                <ThumbUpIcon />
-                                            </Grid>
-                                            <Grid item>{post.likes}</Grid>
-                                        </Grid>
-                                    </CardContent>
-                                </Grid>
-                            </Grid>
-                        </Grid> */}
-                        // <hr/>
                 })
             }
         </div>

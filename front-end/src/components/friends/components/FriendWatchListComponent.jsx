@@ -13,7 +13,6 @@ const FriendWatchListComponent = (props) => {
     })
 
     const handleUserSelect = (data) => {
-        console.log(data)
         props.handleUserSelect(data);
     }
     return (

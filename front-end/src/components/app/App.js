@@ -13,7 +13,7 @@ import MCQGame from "../game/components/MCQGame";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState();
-  const [isFirstTimeUser, setFirstTimeUser] = useState(true);
+  const [isFirstTimeUser, setFirstTimeUser] = useState();
   const [suggestedFriends, setSuggestedFriends] = useState();
   const [friends, setFriends] = useState();
 
@@ -30,7 +30,6 @@ function App() {
 
     // get logged in user details
     axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getfriends/${userid}`).then(res => {
-      console.log(res);
       setFriends(res.data);
     })
   }, []);
@@ -62,7 +61,7 @@ function App() {
     window.location.reload();
   };
 
-  const [pageToShow, setPageToShow] = useState(2);
+  const [pageToShow, setPageToShow] = useState(0);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
@@ -83,7 +82,8 @@ function App() {
   return (
     <div style={{ backgroundColor: "#ffffff" }}>
       {isAuthenticated ? (
-        localStorage.getItem("newUser") !== "false"
+        // localStorage.getItem("newUser") !== "false"
+        isFirstTimeUser
         ? (
           <div
             className="App container mt-5"

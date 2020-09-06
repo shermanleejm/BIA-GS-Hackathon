@@ -6,7 +6,6 @@ import UserPostComponent from '../components/UserPostComponent';
 import { Paper } from '@material-ui/core';
 
 const UserInfoContainer = (props) => {
-    console.log(props.userData);
     const userData = props.userData;
     let watchlists;
     let posts;
@@ -15,7 +14,6 @@ const UserInfoContainer = (props) => {
         watchlists = userData.watchlist;
         posts = userData.posts;
         info = userData.info;
-        console.log(info)
     }
 
     // const watchlists = ["AAPL", "TSLA", "CLDR", "GOOGL", "EBAY"]

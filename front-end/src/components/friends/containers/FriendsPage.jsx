@@ -11,7 +11,6 @@ const FriendsPage = (props) => {
     const [friends, setFriends] = useState();
     const [suggestedFriends, setSuggestedFriends] = useState();
 
-    console.log(props);
     const handleClick = (data) => {
         setUserData(data);
     }

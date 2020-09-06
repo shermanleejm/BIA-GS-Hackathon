@@ -9,7 +9,6 @@ const FriendWatchListInfoComponent = (props) => {
     const [data,setData] = useState()
 
     useEffect(() => {
-        console.log("==========", props.data)
         setFriendData(props.data)
     }, [props])
 
