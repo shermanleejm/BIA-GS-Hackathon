@@ -20,16 +20,28 @@ const UserPostComponent = (props) => {
         };
         postData.push(tempArr);
     });
+
+    const shuffleArray = (array) => {
+        let i = array.length - 1;
+        for (; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
+
     return (
         <div className="col">
             {
-                postData.map(post => {
+                shuffleArray(postData).slice(0, 4).map(post => {
                     return (
                         <div className="card">
                             <div className="card-body">
 
                                 <h5 className="card-title">{post.title}</h5>
-                                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <p className="card-text">{post.shortDescription}</p>
                                 <ThumbUpIcon /> <span className='ml-2'>{post.likes}</span>
                             </div>
                             {/* <div className='float-right'>
