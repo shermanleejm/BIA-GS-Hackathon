@@ -15,21 +15,23 @@ def connect(sender_id, receiver_id):
 
     is_connection_success = False
 
-    try:
-        new_friend = Friend(sender_id = sender_id, receiver_id = receiver_id)
+    already_friends = Friend.query.filter_by(sender_id = sender_id, receiver_id = receiver_id).first()
 
+    if already_friends is None:
+        new_friend = Friend(sender_id = sender_id, receiver_id = receiver_id)
         db.session.add(new_friend)
+        db.session.commit()
+        db.session.close()
 
         friend_reverse = Friend(sender_id = receiver_id, receiver_id = sender_id)
         db.session.add(friend_reverse)
-        db.session.flush()
         db.session.commit()
         db.session.close()
         
         app.logger.info(" SUCCESS: Friendship formed.")
         is_connection_success = True
-    except:
-        app.logger.info(" FAIL: Error in forming friendship.")
+    else:
+        app.logger.info(" FAIL: Error in forming friendship. Users might already be friends.")
 
     return {
         "is_success": is_connection_success

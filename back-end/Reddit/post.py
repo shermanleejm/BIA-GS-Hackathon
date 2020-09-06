@@ -30,7 +30,6 @@ def create_post(user_id, title, content, image_url):
     is_successful_create = False
     
     try:
-
         new_post = Post(title = title, 
                 user_id = user_id, content = content,
                 image_url = image_url)
@@ -41,6 +40,7 @@ def create_post(user_id, title, content, image_url):
         app.logger.info(f" SUCCESS: new post created")
         is_successful_create = True
     except:
+        db.session.rollback()
         app.logger.info(f" FAIL: Error creating new post")
     
     return {
