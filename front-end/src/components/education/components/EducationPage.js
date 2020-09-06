@@ -29,7 +29,7 @@ class EducationPage extends Component {
       prevTopic: categories[0],
       topic: categories[0],
       searching: false,
-      searchValue: "",
+      searchValue: "", 
     };
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -170,7 +170,7 @@ class EducationPage extends Component {
                   }}
                   style={{ cursor: "pointer" }}
                 >
-                  {word}
+                  {this.state.topic === word ? <strong>{word}</strong> : word}
                 </span>
               </Typography>
             );

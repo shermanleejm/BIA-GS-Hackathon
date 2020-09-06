@@ -26,6 +26,7 @@ class MCQGame extends Component {
       showGame: false,
       questionNum: -1,
       numCorrect: 0,
+      showCongratulationsModal: false,
       icons: {
         basic: <ChildFriendlyIcon style={{ height: 75, width: 75 }} />,
         intermediate: <AccessibilityIcon style={{ height: 75, width: 75 }} />,
@@ -115,8 +116,7 @@ class MCQGame extends Component {
         </div>
       );
     } else if (
-      this.state.questionNum <
-      this.state.gameData[this.state.gameToShow].length
+      this.state.questionNum < this.state.gameData[this.state.gameToShow].length
     ) {
       var question = this.state.gameData[this.state.gameToShow][
         this.state.questionNum
@@ -159,22 +159,96 @@ class MCQGame extends Component {
         </div>
       );
     } else {
-      alert(
-        "Congratulations! You got " +
-          this.state.numCorrect +
-          " correct answers!"
-      );
+      // alert(
+      //   "Congratulations! You got " +
+      //     this.state.numCorrect +
+      //     " correct answers!"
+      // );
+      this.setState({ showCongratulationsModal: true });
       // TODO: update backend
-      var newPlayerData = this.state.playerData
-      newPlayerData[this.state.gameToShow] = this.state.numCorrect / 5 * 100
-      this.setState({ questionNum: -1, showGame: false, numCorrect: 0});
+      var newPlayerData = this.state.playerData;
+      newPlayerData[this.state.gameToShow] = (this.state.numCorrect / 5) * 100;
+      this.setState({ questionNum: -1, showGame: false});
     }
+  };
+
+  congratulationsModal() {
+    return (
+      <Modal
+        open={this.state.showCongratulationsModal}
+        onClose={() => {
+          this.setState({
+            showCongratulationsModal: false,
+            questionNum: -1,
+            showGame: false,
+            numCorrect: 0,
+          });
+        }}
+      >
+        <div
+          style={{
+            position: "fixed",
+            outline: 0,
+            top: "25%",
+            left: "50%",
+            transform: "translate(-50%, -25%)",
+            margin: "auto",
+          }}
+        >
+          <Paper
+            style={{
+              padding: "20px",
+              width: "80vw",
+              backgroundColor: "#ffffff",
+            }}
+          >
+            {"Congratulations! You got " +
+              this.state.numCorrect +
+              " correct answers!"}
+          </Paper>
+        </div>
+      </Modal>
+    );
   }
 
   render() {
-    console.log(this.state.questionNum)
+    console.log(this.state.questionNum);
     return (
       <div style={{ backgroundColor: "#ffffff", height: "100%" }}>
+        <Modal
+          open={this.state.showCongratulationsModal}
+          onClose={() => {
+            this.setState({
+              showCongratulationsModal: false,
+              questionNum: -1,
+              showGame: false,
+              numCorrect: 0,
+            });
+          }}
+        >
+          <div
+            style={{
+              position: "fixed",
+              outline: 0,
+              top: "25%",
+              left: "50%",
+              transform: "translate(-50%, -25%)",
+              margin: "auto",
+            }}
+          >
+            <Paper
+              style={{
+                padding: "20px",
+                width: "80vw",
+                backgroundColor: "#ffffff",
+              }}
+            >
+              {"Congratulations! You got " +
+                this.state.numCorrect +
+                " correct answers!"}
+            </Paper>
+          </div>
+        </Modal>
         {this.state.showGame && (
           <Modal
             open={this.state.showGame}
