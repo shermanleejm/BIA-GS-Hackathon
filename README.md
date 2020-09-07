@@ -61,7 +61,7 @@ Gamified the user’s learning experience by having lightning quizzes under the 
 
 * **Ong Jun Xiang** - *Frontend Development* - [ongjx](https://github.com/ongjx)
 * **Sherman** - *Frontend Development* - [shermenleejm](https://github.com/shermenleejm)
-* **Rachel Lui** - *UI/UX Designer* - [rachel](https://github.com/)
+* **Rachel Lui** - *UI/UX Designer* - [rachel-lui](https://github.com/rachel-lui)
 * **Zexel Lew** - *Backend Development* - [zexellew ](https://github.com/zexellew)
 * **Kelvin** - *Backend Development* - [kelvinngsl](https://github.com/kelvinngsl)
 
