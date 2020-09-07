@@ -78,10 +78,10 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("skipReload") === null) {
-      window.location.reload();
-    }
-    localStorage.setItem("skipReload", "true");
+    // if (localStorage.getItem("skipReload") === null) {
+    //   window.location.reload();
+    // }
+    // localStorage.setItem("skipReload", "true");
 
     fetch(process.env.REACT_APP_ZEXEL_IP + "watchlist/getall/Calvin")
       .then((response) => response.json())
