@@ -34,6 +34,7 @@ import qotw
 import friend
 import rank_user
 import rank_info
+import rank_processor
 import savvy_user
 import savvy_info
 
@@ -59,7 +60,7 @@ def register_user():
         "savvy_rank_status": savvy_rank_status
     }
     
-    return jsonify(rank_status)
+    return jsonify(result_dict)
 
 @app.route("/login/profiling", methods = ['PUT'])
 def profile_user():
@@ -227,13 +228,13 @@ def get_non_friends(user_id):
     return jsonify(non_friends), 200
 
 
-@app.route("/user/getrank/<user_id>/<product>", methods = ["GET"])
-def get_user_rank(user_id, product):
+# @app.route("/user/getrank/<user_id>/<product>", methods = ["GET"])
+# def get_user_rank(user_id, product):
 
-    rank_in_int = rank_user.get_user_rank_in_int(user_id, product)
-    rank_name = rank_info.get_rank_name(rank_in_int)
+#     rank_in_int = rank_user.get_user_rank_in_int(user_id, product)
+#     rank_name = rank_info.get_rank_name(rank_in_int)
 
-    return { "rank_name": rank_name }
+#     return { "rank_name": rank_name }
 
 
 @app.route("/user/getsavvyrank/<user_id>", methods = ["GET"])
@@ -261,6 +262,14 @@ def add_savvy_points():
     update_points_result = savvy_user.add_points(user_id, points)
 
     return jsonify(update_points_result)
+
+
+@app.route("/user/getalltrophies/<user_id>", methods = ["GET"])
+def get_all_trophies(user_id):
+    result_dict = rank_processor.get_all_trophies(user_id)
+    
+    return jsonify(result_dict)
+
 
 @app.route("/user/uprank", methods = ["POST"])
 def up_user_rank():
@@ -295,6 +304,10 @@ def add_question():
 def get_latest_question():
     return jsonify( qotw.get_latest_question() )
 
+@app.route("/question/get_all", methods = ["GET"])
+def get_all_questions():
+    return jsonify( qotw.get_all_questions() )
+
 @app.route("/question/send_user_response", methods = ["POST"])
 def send_user_response():
 
@@ -307,5 +320,5 @@ def send_user_response():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
-    # app.run(port=5001, host="0.0.0.0")
+    # app.run(debug=True, host="0.0.0.0")
+    app.run(port=5001, host="0.0.0.0")
