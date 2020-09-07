@@ -65,3 +65,18 @@ Gamified the user’s learning experience by having lightning quizzes under the 
 * **Zexel Lew** - *Backend Development* - [zexellew ](https://github.com/zexellew)
 * **Kelvin** - *Backend Development* - [kelvinngsl](https://github.com/kelvinngsl)
 
+## Deployment Details
+A version of the application is live at 
+http://bia-gs-static.s3-ap-southeast-1.amazonaws.com/index.html
+
+The flask instances are currently running on AWS until we run out of free credits. (Thank you AWS!)
+
+Should you wish to deploy the application yourself be sure to change the IP addresses in /front-end/.env with the new IP addresses of the API. 
+
+The front-end React app can be deployed in any static web hosting platform of your choice by running
+
+npm run build
+
+and copying the contents of the /front-end/build/ folder into your static web hosting platform of choice. 
+
+The back-end API can be deployed on any unix based system by using gunicorn to serve the Flask application.
