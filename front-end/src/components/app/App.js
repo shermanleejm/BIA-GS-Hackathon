@@ -19,19 +19,29 @@ function App() {
 
   useEffect(() => {
     setAuthenticated(Cookies.get("authenticated"));
-    const userid = Cookies.get('userid');
+    const userid = Cookies.get("userid");
 
     // get logged in user not connected friends
-    axios.get(
-        "http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getstrangers/${userid}`
-    ).then(res => {
-        setSuggestedFriends(res.data.slice(0,3));
-    })
+    axios
+      .get(
+        "http://" +
+          process.env.REACT_APP_PUBLIC_IP +
+          `:5001/user/getstrangers/${userid}`
+      )
+      .then((res) => {
+        setSuggestedFriends(res.data.slice(0, 3));
+      });
 
     // get logged in user details
-    axios.get("http://" + process.env.REACT_APP_PUBLIC_IP + `:5001/user/getfriends/${userid}`).then(res => {
-      setFriends(res.data);
-    })
+    axios
+      .get(
+        "http://" +
+          process.env.REACT_APP_PUBLIC_IP +
+          `:5001/user/getfriends/${userid}`
+      )
+      .then((res) => {
+        setFriends(res.data);
+      });
   }, []);
 
   useEffect(() => {
@@ -41,15 +51,16 @@ function App() {
         .get(
           "http://" +
             process.env.REACT_APP_PUBLIC_IP +
-            ":5001/login/checkfirstlogin/"+userid
+            ":5001/login/checkfirstlogin/" +
+            userid
         )
         .then((res) => {
           if (res.data.is_first_login) {
             setFirstTimeUser(true);
-            localStorage.setItem('newUser',"true")
+            localStorage.setItem("newUser", "true");
           } else {
             setFirstTimeUser(false);
-            localStorage.setItem('newUser',"false")
+            localStorage.setItem("newUser", "false");
           }
         });
     }
@@ -61,7 +72,7 @@ function App() {
     window.location.reload();
   };
 
-  const [pageToShow, setPageToShow] = useState(0);
+  const [pageToShow, setPageToShow] = useState(3);
   const headerCallback = (newValue) => {
     setPageToShow(newValue);
   };
@@ -73,7 +84,9 @@ function App() {
       case 1:
         return <EducationPage />;
       case 2:
-        return <FriendsPage suggestedFriends={suggestedFriends} friends={friends}/>;
+        return (
+          <FriendsPage suggestedFriends={suggestedFriends} friends={friends} />
+        );
       case 3:
         return <MCQGame />;
     }
@@ -83,8 +96,7 @@ function App() {
     <div style={{ backgroundColor: "#ffffff" }}>
       {isAuthenticated ? (
         // localStorage.getItem("newUser") !== "false"
-        isFirstTimeUser
-        ? (
+        isFirstTimeUser ? (
           <div
             className="App container mt-5"
             style={{ height: "100vh", backgroundColor: "#ffffff" }}

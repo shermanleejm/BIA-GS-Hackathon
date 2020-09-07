@@ -448,7 +448,6 @@ class HomePage extends Component {
                         alignItems="flex-start"
                         style={{ height: "100%" }}
                       >
-                        {" "}
                         <div>
                           <Grid item>
                             <Typography variant="h6">
@@ -541,7 +540,6 @@ class HomePage extends Component {
   }
 
   render() {
-    console.log(this.state.showPost);
     var theme = createMuiTheme({
       palette: {
         primary: {
@@ -571,7 +569,6 @@ class HomePage extends Component {
               color="primary"
               onClick={() => {
                 this.setState({ showNewPost: true });
-                console.log(this.state.showNewPost);
               }}
             >
               <AddIcon />

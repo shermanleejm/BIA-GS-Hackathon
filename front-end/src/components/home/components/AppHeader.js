@@ -47,7 +47,6 @@ class AppHeader extends Component {
                 });
                 this.props.headerCallback(newValue);
                 localStorage.setItem("pageToShow", newValue);
-                console.log(this.state.value);
               }}
               indicatorColor="primary"
               centered

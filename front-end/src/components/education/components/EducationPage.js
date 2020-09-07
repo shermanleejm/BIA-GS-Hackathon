@@ -69,7 +69,6 @@ class EducationPage extends Component {
           }}
           onChange={(event) => {
             this.setState({ searchValue: event.target.value });
-            console.log(event.target.value);
             if (event.target.value === null || event.target.value === "") {
               this.setState({ data: postData.postData });
             } else {
@@ -78,7 +77,6 @@ class EducationPage extends Component {
               )
                 .then((response) => response.json())
                 .then((data) => {
-                  console.log(data);
                   var newData = [
                     {
                       title: data.term,
