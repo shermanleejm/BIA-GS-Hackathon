@@ -44,6 +44,10 @@ def add_new_user(user_id):
         "is_successful_add": is_successful_add
     }
 
+def get_all_ranks(user_id):
+    user_all_ranks = Rank_user.query.filter_by(user_id = user_id).first()
+    return user_all_ranks.json()
+
 def get_user_rank_in_int(user_id, product):
     user_all_ranks = Rank_user.query.filter_by(user_id = user_id).first()
     rank_in_int = user_all_ranks.json()[product]

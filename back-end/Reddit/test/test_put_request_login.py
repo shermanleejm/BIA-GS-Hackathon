@@ -1,12 +1,12 @@
 import requests
 import json
 
-# url = "http://13.229.107.243:5001/login/register"
-url = "http://localhost:5000/login/register"
+url = "http://13.229.107.243:5001/login/register"
+# url = "http://localhost:5000/login/register"
 
 data = {
-    "user_id": "Nicole",
-    "password": "nicole1"
+    "user_id": "Oliver",
+    "password": "oliver1"
 }
 
 response = requests.put(url, data = json.dumps(data))

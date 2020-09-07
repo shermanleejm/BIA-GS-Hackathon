@@ -82,3 +82,8 @@ def get_latest_question():
     latest_question = Qotw.query.order_by(Qotw.qid.desc()).first()
 
     return latest_question.json()
+
+def get_all_questions():
+    all_questions = Qotw.query.order_by(Qotw.qid.desc()).all()
+
+    return [qn.json() for qn in all_questions]

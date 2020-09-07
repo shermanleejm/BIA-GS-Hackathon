@@ -96,7 +96,8 @@ function App() {
     <div style={{ backgroundColor: "#ffffff" }}>
       {isAuthenticated ? (
         // localStorage.getItem("newUser") !== "false"
-        isFirstTimeUser ? (
+        isFirstTimeUser || localStorage.getItem("newUser") !== "false"
+        ? (
           <div
             className="App container mt-5"
             style={{ height: "100vh", backgroundColor: "#ffffff" }}
