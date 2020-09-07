@@ -98,7 +98,8 @@ class EducationPage extends Component {
 
   render() {
     return (
-      <div
+      <div style={{ width: "100vw" }}>
+        <div
         style={{
           maxWidth: "80vw",
           margin: "auto",
@@ -257,6 +258,8 @@ class EducationPage extends Component {
           </Grid>
         </Paper>
       </div>
+      </div>
+      
     );
   }
 }

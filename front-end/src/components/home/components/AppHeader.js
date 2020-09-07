@@ -14,6 +14,7 @@ import SchoolIcon from "@material-ui/icons/School";
 import PeopleIcon from "@material-ui/icons/People";
 import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { TabPanel } from "@material-ui/lab";
 
 class AppHeader extends Component {
@@ -55,7 +56,13 @@ class AppHeader extends Component {
               <Tab icon={<SchoolIcon />} label="Learn" />
               <Tab icon={<PeopleIcon />} label="Friends" />
               <Tab icon={<SportsEsportsIcon />} label="Game" />
-              {/* <Tab icon={<AccountCircleIcon />} label="User" /> */}
+              <Tab
+                icon={<ExitToAppIcon />}
+                label="Logout"
+                onClick={() => {
+                  localStorage.setItem("authenticated", "false");
+                }}
+              />
             </Tabs>
           </Paper>
         </div>

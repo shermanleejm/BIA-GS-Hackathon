@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
 // import "./App.css";
 import LoginFormContainer from "../login/containers/LoginFormContainer";
 import Cookies from "js-cookie";
@@ -6,137 +6,195 @@ import AppHeader from "../home/components/AppHeader";
 import HomePage from "../home/components/HomePage";
 import EducationPage from "../education/components/EducationPage";
 import QuestionContainer from "../questionnaire/containers/QuestionContainer";
+import AuthPage from "../auth/components/AuthPage";
 import { useEffect } from "react";
 import axios from "axios";
 import FriendsPage from "../friends/containers/FriendsPage";
 import MCQGame from "../game/components/MCQGame";
+import { Paper } from "@material-ui/core";
 
-function App() {
-  const [isAuthenticated, setAuthenticated] = useState();
-  const [isFirstTimeUser, setFirstTimeUser] = useState();
-  const [suggestedFriends, setSuggestedFriends] = useState();
-  const [friends, setFriends] = useState();
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pageToShow: 4,
+      userID: "",
+      suggestedFriends: [],
+      friends: [],
+    };
+  }
 
-  useEffect(() => {
-    setAuthenticated(Cookies.get("authenticated"));
-    const userid = Cookies.get("userid");
-
-    // get logged in user not connected friends
-    axios
-      .get(
-        "http://" +
-          process.env.REACT_APP_PUBLIC_IP +
-          `:5001/user/getstrangers/${userid}`
-      )
-      .then((res) => {
-        setSuggestedFriends(res.data.slice(0, 3));
-      });
-
-    // get logged in user details
-    axios
-      .get(
-        "http://" +
-          process.env.REACT_APP_PUBLIC_IP +
-          `:5001/user/getfriends/${userid}`
-      )
-      .then((res) => {
-        setFriends(res.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      const userid = Cookies.get("userid");
-      axios
-        .get(
-          "http://" +
-            process.env.REACT_APP_PUBLIC_IP +
-            ":5001/login/checkfirstlogin/" +
-            userid
-        )
-        .then((res) => {
-          if (res.data.is_first_login) {
-            setFirstTimeUser(true);
-            localStorage.setItem("newUser", "true");
-          } else {
-            setFirstTimeUser(false);
-            localStorage.setItem("newUser", "false");
-          }
-        });
+  componentDidMount() {
+    if (localStorage.getItem("authenticated") === "true") {
+      this.setState({ pageToShow: 0 });
     }
-  }, [isAuthenticated]);
 
-  const authenticate = () => {
-    setAuthenticated(true);
-    Cookies.set("authenticated", true);
-    window.location.reload();
-  };
+    fetch(process.env.REACT_APP_ZEXEL_IP + "user/getstrangers/Apple")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ suggestedFriends: data.slice[(0, 3)] });
+      });
 
-  const [pageToShow, setPageToShow] = useState(0);
-  const headerCallback = (newValue) => {
-    setPageToShow(newValue);
-  };
+    fetch(process.env.REACT_APP_ZEXEL_IP + "user/getfriends/Apple")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ friends: data });
+      });
+  }
 
-  const mainPage = () => {
-    switch (pageToShow) {
+  mainPage() {
+    switch (this.state.pageToShow) {
       case 0:
         return <HomePage />;
+        break;
       case 1:
         return <EducationPage />;
+        break;
       case 2:
         return (
-          <FriendsPage suggestedFriends={suggestedFriends} friends={friends} />
+          <FriendsPage
+            suggestedFriends={this.state.suggestedFriends}
+            friends={this.state.friends}
+          />
         );
+        break;
       case 3:
-        return <MCQGame />;
+        return <HomePage />;
+        break;
+      case 4:
+        return (
+          <AuthPage
+            authCallback={this.authCallback}
+            headerCallback={this.headerCallback}
+          />
+        );
+        break;
+      case 5:
+        return (
+          <div>
+            <Paper
+              className="container"
+              elevation={3}
+              style={{ "background-color": "lightgrey" }}
+            >
+              <div className="card-body">
+                <h3 className="card-title">
+                  You have a <span className="badge badge-info">LOW RISK</span>{" "}
+                  profile!
+                </h3>
+                <p className="card-text">
+                  These are your potential focus areas:
+                </p>
+                <div className="row text-left mb-4">
+                  <div className="col-md-4 col-sm-12">
+                    <div
+                      className="card h-150 mb-4"
+                      style={{
+                        "box-shadow":
+                          "0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)",
+                      }}
+                    >
+                      <div className="card-body">
+                        <h5 className="card-title">Futures</h5>
+                        <p className="card-text">
+                          <small>
+                            A legal agreement to buy or sell a particular
+                            commodity asset, or security at a predetermined
+                            price at a specified time in the future.
+                          </small>
+                        </p>
+                        <a href="#" className="btn btn-primary">
+                          Learn More
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-4 col-sm-12">
+                    <div
+                      className="card h-150 mb-4"
+                      style={{
+                        "box-shadow":
+                          "0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)",
+                      }}
+                    >
+                      <div className="card-body">
+                        <h5 className="card-title">ETFs</h5>
+                        <p className="card-text">
+                          <small>
+                            A type of security that involves a collection of
+                            securities—such as stocks—that often tracks an
+                            underlying index
+                          </small>
+                        </p>
+                        <a href="#" className="btn btn-primary">
+                          Learn More
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-4 col-sm-12">
+                    <div
+                      className="card h-150 mb-4"
+                      style={{
+                        "box-shadow":
+                          "0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)",
+                      }}
+                    >
+                      <div className="card-body">
+                        <h5 className="card-title">REITs</h5>
+                        <p className="card-text">
+                          <small>
+                            Allows individual investors to earn dividends from
+                            real estate investments—without having to buy,
+                            manage, or finance any properties themselves.
+                          </small>
+                        </p>
+                        <a href="#" className="btn btn-primary">
+                          Learn More
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a
+                  href="#"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    this.setState({ pageToShow: 0 });
+                  }}
+                >
+                  CONTINUE
+                </a>
+              </div>
+            </Paper>
+            );
+          </div>
+        );
+      default:
+        break;
     }
+  }
+
+  headerCallback = (newValue) => {
+    this.setState({ pageToShow: newValue });
   };
 
-  return (
-    <div style={{ backgroundColor: "#ffffff" }}>
-      {isAuthenticated ? (
-        // localStorage.getItem("newUser") !== "false"
-        isFirstTimeUser || localStorage.getItem("newUser") !== "false"
-        ? (
-          <div
-            className="App container mt-5"
-            style={{ height: "100vh", backgroundColor: "#ffffff" }}
-          >
-            <QuestionContainer />
-          </div>
-        ) : (
-          <div>
-            <div style={{ position: "sticky", top: 0, zIndex: 100 }}>
-              <AppHeader
-                pageToShow={pageToShow}
-                headerCallback={headerCallback}
-              />
-            </div>
-            <div>{mainPage()}</div>
-          </div>
-        )
-      ) : (
-        <div className="App container mt-5">
-          <LoginFormContainer authenticate={authenticate} />
+  authCallback = (data) => {};
+
+  render() {
+    return (
+      <div>
+        <div style={{ positition: "sticky", top: 0, zIndex: 100 }}>
+          {this.state.pageToShow != 4 && (
+            <AppHeader
+              pageToShow={this.state.pageToShow}
+              headerCallback={this.headerCallback}
+            />
+          )}
         </div>
-      )}
-
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-    </div>
-  );
+        <div>{this.mainPage()}</div>
+      </div>
+    );
+  }
 }
-
 export default App;

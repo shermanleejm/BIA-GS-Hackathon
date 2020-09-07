@@ -64,8 +64,8 @@ const QuestionContainer = () => {
             <div className='row mx-auto'>
                 <div className='col d-flex align-items-center text-left'>
                     <div>
-                        <h1>First, help us understand you a little better...</h1>
-                        <span>This will help us provide you with a better learning experience!</span>
+                        <h1>Determining your Risk Portfolio...</h1>
+                        <span>In order to get a more customized experience, please answer the following questions to allow us to generate your risk portfolio!</span>
                     </div>
                 </div>
                 <div className={'col'}>
