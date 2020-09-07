@@ -1,4 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+#misc
+.vscode
+.DS_Store
+.gitattributes
 
 # dependencies
 front-end/node_modules
