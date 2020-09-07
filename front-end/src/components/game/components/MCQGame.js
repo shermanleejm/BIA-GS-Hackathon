@@ -82,6 +82,14 @@ class MCQGame extends Component {
       .then((data) => {
         this.setState({ savvyPoints: data.points });
       });
+
+    fetch(process.env.REACT_APP_ZEXEL_IP + "user/getalltrophies/Mike")
+    .then(res => res.json())
+    .then(data => {
+      Object.keys(data).map((key) => {
+        
+      })
+    })
   }
 
   componentWillUnmount() {
