@@ -4,9 +4,9 @@ import json
 url = "http://13.229.107.243:5001/post/create"
 
 data = {
-    "user_id": "Jill",
-    "title": "title for jill's third post",
-    "content": "Hi everyone, this is her third post.",
+    "user_id": "Apple",
+    "title": "title for Apple's first post",
+    "content": "Hi everyone, this is Apple's first post.",
     "image_url": ""
 }
 

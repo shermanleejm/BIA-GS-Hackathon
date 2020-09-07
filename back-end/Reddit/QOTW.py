@@ -1,10 +1,11 @@
 from app import app, db
+from sqlalchemy.sql.expression import func
 
 #  QOTW : question of the week
 
-class Questions(db.Model):
+class Qotw(db.Model):
 
-    qid = db.Column(db.String(), primary_key = True)
+    qid = db.Column(db.Integer, primary_key = True)
     question = db.Column(db.String())
     dt = db.Column(db.DateTime)
     choice_1 = db.Column(db.String())
@@ -15,10 +16,9 @@ class Questions(db.Model):
     correct_option = db.Column(db.String())
     points = db.Column(db.Integer)
     
-    def __init__(self, qid, question, dt, choice_1,
+    def __init__(self, question, dt, choice_1,
             choice_2, choice_3, choice_4, choice_5,
             correct_option, points):
-        self.qid = qid
         self.question = question
         self.dt = dt
         self.choice_1 = choice_1
@@ -26,13 +26,59 @@ class Questions(db.Model):
         self.choice_3 = choice_3
         self.choice_4 = choice_4
         self.choice_5 = choice_5
+        self.correct_option = correct_option
+        self.points = points
 
     def json(self):
         return {
-            "user_id": self.user_id,
-            "password": self.password,
-            "age": self.age,
-            "occupation": self.occupation,
-            "spending": self.spending,
-            "risk": self.risk,
+            "qid": self.qid,
+            "question": self.question,
+            "dt": self.dt,
+            "choice_1": self.choice_1,
+            "choice_2": self.choice_2,
+            "choice_3": self.choice_3,
+            "choice_4": self.choice_4,
+            "choice_5": self.choice_5,
+            "correct_option": self.correct_option,
+            "points": self.points
         }
+
+def add_question( question, choice_1, choice_2,
+            choice_3, choice_4, choice_5,
+            correct_option, points ):
+
+    app.logger.info(f" Attempting to add question in database. ")
+
+    is_add_success = False
+
+    # try:
+
+    new_question = Qotw(
+        question = question, 
+        dt = db.func.now(),
+        choice_1 = choice_1,
+        choice_2 = choice_2, 
+        choice_3 = choice_3,
+        choice_4 = choice_4,
+        choice_5 = choice_5,
+        correct_option = correct_option, 
+        points = points
+        )
+
+    db.session.add(new_question)
+    
+    db.session.commit()
+    db.session.close()
+
+    is_add_success = True
+    # except:
+    #     app.logger.info("Error in adding question.")
+
+    return {
+        "is_successful_add": is_add_success
+    }
+
+def get_latest_question():
+    latest_question = Qotw.query.order_by(Qotw.qid.desc()).first()
+
+    return latest_question.json()

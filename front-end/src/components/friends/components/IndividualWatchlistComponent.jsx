@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import StockContainer from '../../charts/containers/StockContainer'
 const IndividualWatchListComponent = (props) => {
     const [hidden, setHidden] = useState(true);
-    const available = ['AAPL', 'AMZN', "BRK-B", "FB", "NFLX", 'SHOP','SPOT','TSLA','TWLO']
+    const available = ['AAPL', 'AMZN', "BRK-B", "FB", "NFLX", 'SHOP','SPOT','TSLA','TWLO','NIO','FVRR','GOOGL','NKLA','SOLO','UPWK']
 
     return (
         <>

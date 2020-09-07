@@ -8,11 +8,11 @@ import json
 
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+application = Flask(__name__)
+CORS(application)
+application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI')
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(application)
 
 class Stock(db.Model):
 
@@ -108,16 +108,16 @@ class StockPrice(db.Model):
         }
 
 
-@app.route("/")
+@application.route("/")
 def index():
     return 'hello world', 200
 
-@app.route("/stocks", methods=["GET"])
+@application.route("/stocks", methods=["GET"])
 def get_stocks():
     stocks = Stock.query.all()
     return jsonify([stock.json() for stock in stocks]), 200
 
-@app.route("/stock/<symbol>", methods=["GET"])
+@application.route("/stock/<symbol>", methods=["GET"])
 def get_stock(symbol):
     stock = Stock.query.filter_by(ticker=symbol).first()
 
@@ -126,13 +126,13 @@ def get_stock(symbol):
     return "Symbol not found", 400
 
 
-@app.route("/terms", methods=["GET"])
+@application.route("/terms", methods=["GET"])
 def get_terms():
     terms = Term.query.all()
     return jsonify([term.json() for term in terms]), 200
 
 
-@app.route("/term/<term>", methods=["GET"])
+@application.route("/term/<term>", methods=["GET"])
 def get_term(term):
     term = Term.query.filter_by(term=term).first()
 
@@ -144,7 +144,7 @@ def get_term(term):
 # Initial
 
 # For initial adding of Stock
-@app.route('/add', methods=['POST'])
+@application.route('/add', methods=['POST'])
 def add_post():
     data = json.loads(request.get_json())
     stock = Stock(**data)
@@ -154,7 +154,7 @@ def add_post():
     return {"message": f"Stock {stock.name} has been created successfully."}
 
 # For initial adding of Terms
-@app.route('/terms', methods=['POST'])
+@application.route('/terms', methods=['POST'])
 def add_term():
     data = json.loads(request.get_json())
     term = Term(**data)
@@ -165,7 +165,7 @@ def add_term():
 
 
 # For initial adding of Stock Price
-@app.route('/add_stockprice', methods=['POST'])
+@application.route('/add_stockprice', methods=['POST'])
 def add_stockprice():
     data = json.loads(request.get_json())
     stockprice = StockPrice(**data)
@@ -175,7 +175,7 @@ def add_stockprice():
     return {"message":  "has been created successfully."}
 
 
-@app.route("/stock_price/<symbol>", methods=["GET"])
+@application.route("/stock_price/<symbol>", methods=["GET"])
 def get_stock_prices(symbol):
     stock_prices = StockPrice.query.filter_by(ticker=symbol).all()
 
@@ -193,4 +193,4 @@ def get_stock_prices(symbol):
     return "Symbol not found", 400
         
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    application.run(host='0.0.0.0', port=5000)

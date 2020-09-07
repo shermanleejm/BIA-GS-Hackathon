@@ -4,7 +4,7 @@ import json
 url = "http://13.229.107.243:5001/friend/connect"
 
 data = {
-    "sender_id": "Jill",
+    "sender_id": "Bob",
     "receiver_id": "James" 
 }
 

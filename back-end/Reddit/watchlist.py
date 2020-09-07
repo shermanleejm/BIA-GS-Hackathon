@@ -39,8 +39,6 @@ def get_watchlist(user_id):
 
     app.logger.info(f"Querying watchlist table for products followed by {user_id}")
     queryList = Watchlist.query.filter_by(user_id = user_id).all()
-
-    print(queryList)
     
     return [row.product for row in queryList]
 

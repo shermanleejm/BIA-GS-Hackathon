@@ -3,13 +3,13 @@ import requests
 import json
 endpoint = 'http://127.0.0.1:5000/add'
 
-stock = yf.Ticker("MSFT")
+stock = yf.Ticker("TSLA")
 stock_info = stock.info
 
 # print(stock_info.keys())
-for k in stock_info.keys():
-    print(k)
-    print()
+# for k in stock_info.keys():
+#     print(k)
+#     print()
 
 data = {}
 data['ticker'] = stock_info['symbol']
@@ -21,11 +21,11 @@ data['website'] = stock_info['website']
 data['industry'] = stock_info['industry']
 data['logo_url'] = stock_info['logo_url']
 
-# resp = requests.post(endpoint, json=json.dumps(data))
-# if resp.ok:
-#     print('success')
-# else:
-#     print('fail')
+resp = requests.post(endpoint, json=json.dumps(data))
+if resp.ok:
+    print('success')
+else:
+    print('fail')
 
 
 
