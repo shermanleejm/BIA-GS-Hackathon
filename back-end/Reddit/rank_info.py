@@ -20,6 +20,4 @@ class Rank_info(db.Model):
 def get_rank_name(level):
     rank = Rank_info.query.filter_by(level = level).first()
 
-    return {
-        "rank": rank.rank_name
-    }
+    return rank.rank_name

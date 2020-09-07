@@ -1,28 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 // import './index.css';
-import App from './components/app/App';
+import App from "./components/app/App";
 import TempApp from "./components/app/TempApp";
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from "./serviceWorker";
 
-import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.css";
 // import SampleComponent from './components/SampleComponent';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-    {/* <Router>
-      <div className='container'>
-        <Switch>
-          <Route exact path='/home' component={Home}/>
-        </Switch>
-        <LoginFormContainer />
-
-      </div>
-    </Router> */}
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // renders to public/index.html div with id "sample-component"
 // ReactDOM.render(<SampleComponent />, document.getElementById("sample-component"))

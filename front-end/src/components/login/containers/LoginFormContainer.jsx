@@ -98,4 +98,4 @@ const LoginFormContainer = (props) => {
     )
 }
 
-export default LoginFormContainer
+export default LoginFormContainer;
