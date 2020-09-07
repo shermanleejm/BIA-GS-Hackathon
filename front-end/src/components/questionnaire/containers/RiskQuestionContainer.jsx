@@ -14,7 +14,7 @@ const RiskQuestionContainer = (props) => {
     return (
 
                 <form className={classnames('pt-5',styles["form"])} hidden={props.currentQuestion !== 3}>
-                    <h2 className='mb-4'>What is your risk appetite?</h2>
+                    <h2 className='mb-4'>How would you rate your risk appetite?</h2>
                     <div className={classnames(styles["inputGroup"])}>
                         <input id="high" name="radio" type="radio" onClick={()=>{handleClick('High')}}/>
                         <label for="high">High</label>
