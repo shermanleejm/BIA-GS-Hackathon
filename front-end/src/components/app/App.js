@@ -59,7 +59,7 @@ class App extends Component {
         );
         break;
       case 3:
-        return <HomePage />;
+        return <MCQGame />;
         break;
       case 4:
         return (
