@@ -7,14 +7,18 @@ One-stop platform that provides youths with easy access to simple yet useful lea
 <p float="left">
   <img src="./asset/1.1.jpg" width="42%" height="70%"/>
   <img src="./asset/1.2.jpg" width="48%" /> 
-  <img src="./asset/1.3.jpg" width="100%" />
+  <img src="./asset/1.3.jpg" width="90%" />
 </p>
 
 ## Learn/Explore
-![Screenshot of Learn/Explore](./asset/2.1.jpg)
+<p float="left">
+  <img src="./asset/2.1.jpg" width="90%" />
+</p>
 
 ## Community & Social Media
-![Screenshot of Community & Social Media](./asset/3.1.jpg)
+<p float="left">
+  <img src="./asset/3.1.jpg" width="90%" />
+</p>
 
 ## Built With
 
