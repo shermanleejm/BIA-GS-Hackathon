@@ -24,6 +24,20 @@ Many questions, but find it difficult to seek help? This feature to mimic a soci
   <img src="./asset/3.1.jpg" width="90%" />
 </p>
 
+## Gamification
+Gamified the user’s learning experience by having lightning quizzes under the Game tab to test their knowledge. We also provide incremental rewards to encourage continuous engaged learning.
+
+
+<p float="left">
+  <img src="./asset/4.1.jpg" width="48%" />
+  <img src="./asset/4.2.jpg" width="48%" /> 
+</p>
+
+<p float="left">
+  <img src="./asset/4.3.jpg" width="48%" />
+  <img src="./asset/4.4.jpg" width="48%" /> 
+</p>
+
 ## Built With
 
 * Frontend
@@ -47,7 +61,7 @@ Many questions, but find it difficult to seek help? This feature to mimic a soci
 
 * **Ong Jun Xiang** - *Frontend Development* - [ongjx](https://github.com/ongjx)
 * **Sherman** - *Frontend Development* - [shermenleejm](https://github.com/shermenleejm)
-* **Rachel Lui** - *UI/UX Designer* - [rachel](https://github.com/)
+* **Rachel Lui** - *UI/UX Designer* - [rachel-lui](https://github.com/rachel-lui)
 * **Zexel Lew** - *Backend Development* - [zexellew ](https://github.com/zexellew)
 * **Kelvin** - *Backend Development* - [kelvinngsl](https://github.com/kelvinngsl)
 
