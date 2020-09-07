@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-ENV key=value
+ENV DB_URI = "mysql+pymysql://admin:password1@reddit.cdmy9ha0drjx.us-east-1.rds.amazonaws.com:3306/gs-hackathon"
 
 EXPOSE 5000
 

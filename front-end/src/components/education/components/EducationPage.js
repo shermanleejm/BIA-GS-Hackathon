@@ -55,10 +55,10 @@ class EducationPage extends Component {
 
   searchBar() {
     return (
-      <span style={{ float: "right" }}>
+      <span style={{ float: window.innerWidth < 1000 ? "left" : "right" }}>
         <TextField
           // label="search Financial Terms"
-          placeholder="search Financial Terms"
+          placeholder="search terms"
           value={this.state.searchValue}
           InputProps={{
             startAdornment: (
@@ -69,15 +69,12 @@ class EducationPage extends Component {
           }}
           onChange={(event) => {
             this.setState({ searchValue: event.target.value });
-
+            console.log(event.target.value);
             if (event.target.value === null || event.target.value === "") {
               this.setState({ data: postData.postData });
             } else {
               fetch(
-                "http://" +
-                  process.env.REACT_APP_PUBLIC_IP +
-                  ":8000/term/" +
-                  event.target.value
+                process.env.REACT_APP_KELVIN_IP + "term/" + event.target.value
               )
                 .then((response) => response.json())
                 .then((data) => {
@@ -178,9 +175,17 @@ class EducationPage extends Component {
 
           {window.innerWidth > 1000 && this.searchBar()}
         </div>
-        {/* 
-        <div>{window.innerWidth <= 1000 && this.searchBar()}</div> */}
-        <Paper elevation={3} style={{ padding: "10px" }}>
+
+        <div style={{ marginBottom: "30px" }}>
+          {window.innerWidth <= 1000 && this.searchBar()}
+        </div>
+        <Paper
+          elevation={3}
+          style={{
+            padding: "10px",
+            marginTop: window.innerWidth < 1000 ? "80px" : "10px",
+          }}
+        >
           <Grid
             container
             direction="row"

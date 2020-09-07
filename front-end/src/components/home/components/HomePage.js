@@ -174,52 +174,34 @@ class HomePage extends Component {
                     style={{ padding: "10px" }}
                   >
                     <Grid item alignItems="flex-start" xs={12} md={8} lg={10}>
-                      {this.state.isLoaded ? (
-                        <CardContent>
-                          <Typography variant="h5">{post.title}</Typography>
-                          <Typography variant="body2">
-                            {post.shortDescription}
-                          </Typography>
+                      <CardContent>
+                        <Typography variant="h5">{post.title}</Typography>
+                        <Typography variant="body2">
+                          {post.shortDescription}
+                        </Typography>
 
-                          <Grid
-                            container
-                            direction="row"
-                            justify="flex-start"
-                            alignItems="center"
-                            spacing={3}
-                            style={{ paddingTop: "10px" }}
-                          >
-                            <Grid item>
-                              <ThumbUpIcon />
-                            </Grid>
-                            <Grid item>{post.likes}</Grid>
+                        <Grid
+                          container
+                          direction="row"
+                          justify="flex-start"
+                          alignItems="center"
+                          spacing={3}
+                          style={{ paddingTop: "10px" }}
+                        >
+                          <Grid item>
+                            <ThumbUpIcon />
                           </Grid>
-                        </CardContent>
-                      ) : (
-                        <div style={{ width: "100%", paddingLeft: "10%" }}>
-                          <Skeleton variant="text" />
-                          <Skeleton variant="text" />
-                          <Skeleton variant="text" />
-                        </div>
-                      )}
+                          <Grid item>{post.likes}</Grid>
+                        </Grid>
+                      </CardContent>
                     </Grid>
 
                     {window.innerWidth > 1000 && (
                       <Grid item xs={4} md={3} lg={2}>
-                        {this.state.isLoaded ? (
-                          <img
-                            src={post.img}
-                            style={{ height: "128px", width: "128px" }}
-                          />
-                        ) : (
-                          <div>
-                            <Skeleton
-                              variant="rect"
-                              height="128px"
-                              width="128px"
-                            />
-                          </div>
-                        )}
+                        <img
+                          src={post.img}
+                          style={{ height: "128px", width: "128px" }}
+                        />
                       </Grid>
                     )}
                   </Grid>
@@ -237,7 +219,7 @@ class HomePage extends Component {
       <div
         style={{
           height: "500px",
-          width: window.innerWidth > 800 ? "80vw" : "90vw",
+          width: window.innerWidth > 800 ? "80vw" : "80vw",
         }}
       >
         <ResponsiveLine
@@ -403,7 +385,7 @@ class HomePage extends Component {
               </Grid>
               {post.comments.map((c) => (
                 <Grid item>
-                  <Card style={{ width: "76vw" }}>
+                  <Card style={{ width: "76vw", padding: "20px" }}>
                     <strong>{c.commenter}</strong>
                     <Typography variant="body2">{c.comment}</Typography>
                   </Card>
@@ -466,53 +448,43 @@ class HomePage extends Component {
                         alignItems="flex-start"
                         style={{ height: "100%" }}
                       >
-                        {this.state.isLoaded ? (
-                          <div>
-                            <Grid item>
-                              <Typography variant="h6">
-                                {this.state.top4[key]["title"]}
-                              </Typography>
-                            </Grid>
+                        {" "}
+                        <div>
+                          <Grid item>
+                            <Typography variant="h6">
+                              {this.state.top4[key]["title"]}
+                            </Typography>
+                          </Grid>
 
-                            <Grid item>
-                              {this.state.top4[key]["shortDescription"].length >
-                              100 ? (
-                                <span>
-                                  <Typography variant="body2">
-                                    {this.state.top4[key][
-                                      "shortDescription"
-                                    ].slice(0, 93)}
-                                    <strong> more...</strong>
-                                  </Typography>
-                                </span>
-                              ) : (
+                          <Grid item>
+                            {this.state.top4[key]["shortDescription"].length >
+                            100 ? (
+                              <span>
                                 <Typography variant="body2">
-                                  {this.state.top4[key]["shortDescription"]}
+                                  {this.state.top4[key][
+                                    "shortDescription"
+                                  ].slice(0, 93)}
+                                  <strong> more...</strong>
                                 </Typography>
-                              )}
-                            </Grid>
-                          </div>
-                        ) : (
-                          <div>
-                            <Skeleton variant="text" />
-                          </div>
-                        )}
-
+                              </span>
+                            ) : (
+                              <Typography variant="body2">
+                                {this.state.top4[key]["shortDescription"]}
+                              </Typography>
+                            )}
+                          </Grid>
+                        </div>
                         <Grid item>
-                          {this.state.isLoaded ? (
-                            <Button
-                              onClick={() => {
-                                this.setState({
-                                  showModal: true,
-                                  modalToShow: key,
-                                });
-                              }}
-                            >
-                              learn more
-                            </Button>
-                          ) : (
-                            <Skeleton variant="rect" width="100" height="50" />
-                          )}
+                          <Button
+                            onClick={() => {
+                              this.setState({
+                                showModal: true,
+                                modalToShow: key,
+                              });
+                            }}
+                          >
+                            learn more
+                          </Button>
                         </Grid>
                       </Grid>
                     </Paper>
@@ -554,16 +526,14 @@ class HomePage extends Component {
         <Grid item>
           <Grid container column justify="space-between" alignItems="center">
             {this.state.isLoaded &&
-              this.state.chosenFilter.includes("Recommended") &&
-              this.showRecommendedPosts()}
-
-            {this.state.isLoaded &&
-              this.state.chosenFilter.includes("Friends") &&
-              this.showRecommendedPosts()}
-
-            {this.state.isLoaded &&
               this.state.chosenFilter.includes("Watch List") &&
               this.showWatchList()}
+              
+            {this.state.chosenFilter.includes("Recommended") &&
+              this.showRecommendedPosts()}
+
+            {this.state.chosenFilter.includes("Friends") &&
+              this.showRecommendedPosts()}
           </Grid>
         </Grid>
       </Grid>
