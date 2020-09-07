@@ -1,73 +1,28 @@
-# BIA-GS-Hackathon
+# SAVVY+
 
-Winner winner chicken dinner
+One-stop platform that provides youths with easy access to simple yet useful learning resources, an online community of like-minded individuals and engaging tools to track their learning progress.
 
-<br>
+## Financial Profiling
+![Screenshot of Financial Profiling](./asset/1.1.jpg)
+![Screenshot of Financial Profiling](./asset/1.2.jpg)
+![Screenshot of Financial Profiling](./asset/1.3.jpg)
 
-### Install AWS CLI
+## Learn/Explore
+![Screenshot of Learn/Explore](./asset/2.1.jpg)
 
-#### in your aws folder navifate to
+## Community & Social Media
+![Screenshot of Community & Social Media](./asset/3.1.jpg)
 
-~/.aws/credentials (Linux & Mac)
-%USERPROFILE%\.aws\credentials (Windows)
 
-#### the following lines into credentials switch with your own keys
+## Built With
 
-[GS]
-aws_access_key_id =
-aws_secret_access_key =
+* [ReactJS](https://reactjs.org/) - Frontend Framework
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/) - Lightweight Web Framework
 
-<br>
+## Authors
 
-## FOR BACK-END
-
-### use virtual env
-
-cd back-end; source env/bin/activate
-
-<br>
-
-### Copy packages to requirements
-
-pip freeze > requirements.txt
-
-<br>
-
-### MAC authenticate, build, push to ECR
-
-cd back-end/service/v1/financial; aws ecr get-login-password --region us-east-1 --profile GS | docker login --username AWS --password-stdin 498470885275.dkr.ecr.us-east-1.amazonaws.com; docker build -t gs-hackathon-kelvin .; docker tag gs-hackathon-kelvin:latest 498470885275.dkr.ecr.us-east-1.amazonaws.com/gs-hackathon-kelvin:latest; docker push 498470885275.dkr.ecr.us-east-1.amazonaws.com/gs-hackathon-kelvin:latest
-
-cd back-end/service/v1/financial; aws ecr get-login-password --region ap-southeast-1 --profile GS | docker login --username AWS --password-stdin 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com; docker build -t gs-hackathon-zexel .; docker tag gs-hackathon-zexel:latest 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon-zexel:latest; docker push 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon-zexel:latest
-
-<br>
-
-### Windows authenticate build, push to ECR
-
-(Get-ECRLoginCommand).Password | docker login --profile GS --username AWS --password-stdin 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com
-docker build -t gs-hackathon .
-docker tag gs-hackathon:latest 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon:latest
-docker push 498470885275.dkr.ecr.ap-southeast-1.amazonaws.com/gs-hackathon:latest
-
-### push to s3 (from front-end)
-
-rm -rf build; npm run build; aws --profile GS s3 rm s3://bia-gs-static --recursive; aws --profile GS s3 cp build s3://bia-gs-static --recursive --acl public-read
-
-<br><br>
-
-## FOR FRONT-END
-
-### use env variables; start all env variables with REACT_APP
-
-#### e.g. to call our API IP
-
-process.env.REACT_APP_PUBLIC_IP
-
-<br>
-
-### set env variables in
-
-back-end/.env
-
-<br>
-
-### commands to set up environment is in front-end/README.md
+* **Ong Jun Xiang** - *Frontend Development* - [ongjx](https://github.com/ongjx)
+* **Sherman** - *Frontend Development* - [shermenleejm](https://github.com/shermenleejm)
+* **Rachel Lui** - *Backend Development* - [rachel](https://github.com/)
+* **Zexel Lew** - *UIUX|Frontend Development* - [zexellew ](https://github.com/zexellew)
+* **Kelvin** - *Backend Development* - [kelvinngsl](https://github.com/kelvinngsl)
