@@ -24,6 +24,20 @@ Many questions, but find it difficult to seek help? This feature to mimic a soci
   <img src="./asset/3.1.jpg" width="90%" />
 </p>
 
+## Gamification
+Gamified the user’s learning experience by having lightning quizzes under the Game tab to test their knowledge. We also provide incremental rewards to encourage continuous engaged learning.
+
+
+<p float="left">
+  <img src="./asset/4.1.jpg" width="48%" />
+  <img src="./asset/4.2.jpg" width="48%" /> 
+</p>
+
+<p float="left">
+  <img src="./asset/4.3.jpg" width="48%" />
+  <img src="./asset/4.4.jpg" width="48%" /> 
+</p>
+
 ## Built With
 
 * Frontend
