@@ -488,7 +488,7 @@ class MCQGame extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: "#ffffff", height: "100%" }}>
+      <div style={{ backgroundColor: "#ffffff", height: "100vh" }}>
         <Modal
           open={this.state.showCongratulationsModal}
           onClose={() => {
