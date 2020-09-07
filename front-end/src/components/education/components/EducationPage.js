@@ -154,6 +154,7 @@ class EducationPage extends Component {
                   paddingTop: "10px",
                   paddingRight: "20px",
                   display: "inline-block",
+                  paddingBottom: "10px",
                 }}
               >
                 <span
