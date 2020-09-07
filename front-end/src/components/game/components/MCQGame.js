@@ -47,7 +47,7 @@ class MCQGame extends Component {
       showCongratulationsModal: false,
       categories: categories,
       topic: categories[0],
-      showGameBoard: false,
+      showGameBoard: true,
       savvyPoints: 0,
       trophies: [
         "Week 4",
@@ -82,6 +82,14 @@ class MCQGame extends Component {
       .then((data) => {
         this.setState({ savvyPoints: data.points });
       });
+
+    fetch(process.env.REACT_APP_ZEXEL_IP + "user/getalltrophies/Mike")
+    .then(res => res.json())
+    .then(data => {
+      Object.keys(data).map((key) => {
+        
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -130,7 +138,7 @@ class MCQGame extends Component {
           </Grid>
         </Grid>
 
-        <Paper style={{ textAlign: "center" }}>
+        <Paper style={{ textAlign: "center", marginTop: "30px" }}>
           <Grid
             container
             justify="space-between"
@@ -141,9 +149,10 @@ class MCQGame extends Component {
               return (
                 <Grid item md={4} xs={12} lg={4}>
                   <Icon
-                    icon={trophyIcon}
+                    icon={this.state.trophyIcons[Math.floor(Math.random() * 5)]}
                     style={{ width: "60px", height: "60px" }}
                   />
+                  <Typography variant="h6">{trophy}</Typography>
                 </Grid>
               );
             })}
@@ -487,7 +496,7 @@ class MCQGame extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: "#ffffff", height: "100%" }}>
+      <div style={{ backgroundColor: "#ffffff", height: "100vh" }}>
         <Modal
           open={this.state.showCongratulationsModal}
           onClose={() => {
